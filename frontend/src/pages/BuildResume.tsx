@@ -1,3 +1,26 @@
+// Import the BacktraceClient from @backtrace/react with your favorite package manager.
+import { BacktraceClient, BacktraceConfiguration } from '@backtrace/react';
+
+// Configure client options
+const options: BacktraceConfiguration = {
+    // Name of the website/application
+    name: 'MyWebPage',
+    // Version of the website
+    version: '1.2.3',
+    // Submission url
+    // <universe> is the subdomain of your Backtrace instance (<universe>.backtrace.io)
+    // <token> can be found in Project Settings/Submission tokens
+    url: 'https://submit.backtrace.io/<universe>/<token>/json',
+};
+
+// Initialize the client with the options
+const client = BacktraceClient.initialize(options);
+
+// By default, Backtrace will send an error for Uncaught Exceptions and Unhandled Promise Rejections
+
+// Manually send an error
+client.send(new Error('Something broke!'));
+
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
@@ -222,32 +245,30 @@ const BuildResume = () => {
     }
   };
 
-  // Generate PDF
   const generatePDF = () => {
     const resumeElement = document.getElementById("resume-preview");
     if (!resumeElement) {
       alert("Failed to find resume content.");
       return;
     }
-
+  
     const doc = new jsPDF();
     const content = resumeElement.innerText || "";
-
-    //const pageWidth = doc.internal.pageSize.getWidth();
+  
+    const pageWidth = doc.internal.pageSize.getWidth();
     const margins = 10;
+    const textWidth = pageWidth - margins * 2;
     const lineHeight = 10;
-    //const textWidth = pageWidth - margins * 2;
-
     const lines = content.split("\n");
     let yPosition = margins;
-
+  
     lines.forEach((line) => {
       if (line.trim() === "") {
         return;
       }
-
+  
       const isHeadline = line.match(/^[A-Za-z\s]+(:?|(?=\s|$))$/);
-
+  
       if (isHeadline) {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(14);
@@ -255,16 +276,21 @@ const BuildResume = () => {
         doc.setFont("helvetica", "normal");
         doc.setFontSize(10);
       }
-
-      if (yPosition + lineHeight > doc.internal.pageSize.getHeight() - margins) {
-        doc.addPage();
-        yPosition = margins;
-      }
-
-      doc.text(line, margins, yPosition);
-      yPosition += lineHeight;
+  
+      // Split text into chunks that fit within the text width
+      const splitLines = doc.splitTextToSize(line, textWidth);
+  
+      splitLines.forEach((splitLine: any) => {
+        if (yPosition + lineHeight > doc.internal.pageSize.getHeight() - margins) {
+          doc.addPage();
+          yPosition = margins;
+        }
+  
+        doc.text(splitLine, margins, yPosition);
+        yPosition += lineHeight;
+      });
     });
-
+  
     doc.save("resume.pdf");
   };
 
@@ -649,7 +675,7 @@ const BuildResume = () => {
           <div className="mb-6">
             <h1 className="text-2xl font-bold">{personalDetails.fullName}</h1>
             <p className="text-sm">
-              {personalDetails.email} ∙ {personalDetails.phone} ∙ {personalDetails.linkedin} ∙ {personalDetails.github}
+              {personalDetails.email} - {personalDetails.phone} - {personalDetails.linkedin} - {personalDetails.github}
             </p>
           </div>
 
