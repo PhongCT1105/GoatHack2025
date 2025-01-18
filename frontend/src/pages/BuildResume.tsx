@@ -12,7 +12,7 @@ const BuildResume = () => {
   const [projects, setProjects] = useState<ProjectData[]>([]);
   const [githubLink, setGithubLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [eduaction, setEducation] = useState("")
+  const [education, setEducation] = useState("")
   const [skill, setSkill] = useState('');
   const [experience, setExperience] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
