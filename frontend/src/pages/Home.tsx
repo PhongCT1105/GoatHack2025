@@ -7,7 +7,7 @@ const Home = () => {
           Start building your professional resume today. Choose one of the options in the navigation above.
         </p>
         <div className="mt-6">
-          <button className="px-6 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600 transition">
+          <button className="px-6 py-2 bg-red-600 text-white font-bold rounded hover:bg-blue-600 transition">
             Get Started
           </button>
         </div>
