@@ -12,6 +12,9 @@ const BuildResume = () => {
   const [projects, setProjects] = useState<ProjectData[]>([]);
   const [githubLink, setGithubLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [eduaction, setEducation] = useState("")
+  const [skill, setSkill] = useState('');
+  const [experience, setExperience] = useState('');
 
   const toggleSection = (section: string) => {
     setExpanded(expanded === section ? null : section);
@@ -57,39 +60,82 @@ const BuildResume = () => {
         <div>
           <button
             onClick={() => toggleSection("projects")}
-            className="w-full text-left p-2 bg-gray-200 hover:bg-gray-300 rounded mb-2"
+            className="w-full flex items-center justify-between p-3 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-md mb-3 transition-all duration-300"
           >
-            {expanded === "projects" ? "▼" : ">"}
-            <span className="mr-2"> Projects</span>
+            <span className="font-medium text-gray-700">Projects</span>
+            <span
+              className={`transform transition-transform duration-300 ${expanded === "projects" ? "rotate-180" : "rotate-0"
+                }`}
+            >
+              ▼
+            </span>
           </button>
+
           {expanded === "projects" && (
             <div className="ml-4">
               {/* GitHub Input Form */}
-              <form onSubmit={handleGithubSubmit} className="mb-4">
+              <form onSubmit={handleGithubSubmit} className="flex items-center">
                 <input
                   type="text"
                   value={githubLink}
                   onChange={(e) => setGithubLink(e.target.value)}
-                  placeholder="Enter GitHub repository URL"
-                  className="w-full p-2 border rounded mb-2"
+                  placeholder="GitHub repository URL"
+                  className="flex-grow p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300"
+                  className="ml-2 p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:bg-blue-300 transition-all"
                 >
-                  {isLoading ? "Loading..." : "Add Project"}
+                  {isLoading ? (
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8H4z"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M3 10a1 1 0 011-1h4V4a1 1 0 112 0v5h4a1 1 0 110 2h-4v5a1 1 0 11-2 0v-5H4a1 1 0 01-1-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
                 </button>
               </form>
 
               {/* List of Projects */}
               {projects.map((project, index) => (
-                <div key={index} className="mb-4 p-4 border rounded">
-                  <h3 className="font-bold">{project.repoName}</h3>
-                  <p className="text-sm text-gray-600">{project.date}</p>
-                  <ul className="mt-2 list-disc pl-5">
+                <div
+                  key={index}
+                  className="mb-4 p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition-all"
+                >
+                  <h3 className="font-semibold text-lg">{project.repoName}</h3>
+                  <p className="text-xs text-gray-500">{project.date}</p>
+                  <ul className="mt-2 list-disc pl-5 space-y-1">
                     {project.descriptions.map((desc, descIndex) => (
-                      <li key={descIndex} className="text-sm">
+                      <li key={descIndex} className="text-sm text-gray-700">
                         {desc}
                       </li>
                     ))}
@@ -99,6 +145,7 @@ const BuildResume = () => {
             </div>
           )}
         </div>
+
       </div>
 
       {/* Right Side - Live Resume Preview */}
