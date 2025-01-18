@@ -9,7 +9,6 @@ interface ProjectData {
 }
 
 const BuildResume = () => {
-  const [expanded, setExpanded] = useState<string | null>(null);
   const [projects, setProjects] = useState<ProjectData[]>([]);
   const [githubLink, setGithubLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -19,6 +18,14 @@ const BuildResume = () => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [currentDescription, setCurrentDescription] = useState("");
   const cardRefs = useRef([]);
+  const [experiencesExpanded, setExperiencesExpanded] = useState(false);
+  const [projectsExpanded, setProjectsExpanded] = useState(false);
+  const [educationExpanded, setEducationExpanded] = useState(false);
+
+  // Each section gets its own toggle function
+  const toggleExperiences = () => setExperiencesExpanded(prev => !prev);
+  const toggleProjects = () => setProjectsExpanded(prev => !prev);
+  const toggleEducation = () => setEducationExpanded(prev => !prev);
 
   const handleDescriptionChange = (projectIndex, newDescription) => {
     const updatedProjects = [...projects];
@@ -56,6 +63,7 @@ const BuildResume = () => {
     updatedProjects[index].descriptions = currentDescription.split("\n");
     setProjects(updatedProjects);
     setEditingIndex(null); // Exit edit mode after saving
+    localStorage.setItem("projects", JSON.stringify(updatedProjects));
   };
 
   // Handle delete project
@@ -63,10 +71,7 @@ const BuildResume = () => {
     const updatedProjects = [...projects];
     updatedProjects.splice(index, 1); // Remove the project from the array
     setProjects(updatedProjects);
-  };
-
-  const toggleSection = (section: string) => {
-    setExpanded(expanded === section ? null : section);
+    localStorage.setItem("projects", JSON.stringify(updatedProjects));
   };
 
   const handleGithubSubmit = async (e: React.FormEvent) => {
@@ -87,7 +92,10 @@ const BuildResume = () => {
 
       console.log("Received data from backend:", response.data);
 
-      setProjects([...projects, response.data]);
+      const updatedProjects = [...projects, response.data];
+      setProjects(updatedProjects);
+      localStorage.setItem("projects", JSON.stringify(updatedProjects)); // Save to localStorage
+
       setGithubLink("");
     } catch (error) {
       console.error("Error fetching repository data:", error);
@@ -103,26 +111,26 @@ const BuildResume = () => {
       alert("Failed to find resume content.");
       return;
     }
-  
+
     const doc = new jsPDF();
     const content = resumeElement.innerText || ""; // Extract plain text from the element
-  
+
     const pageWidth = doc.internal.pageSize.getWidth();
     const margins = 10;
     const lineHeight = 10;
     const textWidth = pageWidth - margins * 2;
-  
+
     const lines = content.split("\n"); // Split content into individual lines
     let yPosition = margins;
-  
+
     lines.forEach((line) => {
       if (line.trim() === "") {
         return;
       }
-  
+
       // Check for headline-like lines
       const isHeadline = line.match(/^[A-Za-z\s]+(:?|(?=\s|$))$/); // Matches lines that are titles or headings
-  
+
       if (isHeadline) {
         doc.setFont("helvetica", "bold"); // Bold font for headlines
         doc.setFontSize(14); // Larger font size
@@ -130,20 +138,28 @@ const BuildResume = () => {
         doc.setFont("helvetica", "normal"); // Normal font for regular text
         doc.setFontSize(10); // Smaller font size
       }
-  
+
       // If the text doesn't fit on the current page, create a new page
       if (yPosition + lineHeight > doc.internal.pageSize.getHeight() - margins) {
         doc.addPage();
         yPosition = margins;
       }
-  
+
       // Add the line to the PDF
       doc.text(line, margins, yPosition);
       yPosition += lineHeight;
     });
-  
+
     doc.save("resume.pdf");
   };
+
+  // Retrieve projects from localStorage on component mount
+  useEffect(() => {
+    const storedProjects = localStorage.getItem("projects");
+    if (storedProjects) {
+      setProjects(JSON.parse(storedProjects)); // Set the stored projects
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex bg-gray-100">
@@ -153,19 +169,19 @@ const BuildResume = () => {
 
         <div>
           <button
-            onClick={() => toggleSection("experiences")}
+            onClick={toggleExperiences}
             className="w-full flex items-center justify-between p-3 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-md mb-3 transition-all duration-300"
           >
             <span className="font-medium text-gray-700">Experiences</span>
             <span
-              className={`transform transition-transform duration-300 ${expanded === "experiences" ? "rotate-180" : "rotate-0"
+              className={`transform transition-transform duration-300 ${experiencesExpanded ? "rotate-180" : "rotate-0"
                 }`}
             >
               ▼
             </span>
           </button>
 
-          {expanded === "experiences" && (
+          {experiencesExpanded && (
             <div className="w-full">
               <form onSubmit={handleGithubSubmit} className="flex items-center">
                 <input
@@ -220,19 +236,19 @@ const BuildResume = () => {
         </div>
         <div>
           <button
-            onClick={() => toggleSection("projects")}
-            className="w-full flex items-center justify-between p-3 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-md mb-3 mt-6 transition-all duration-300"
+            onClick={toggleProjects}
+            className="w-full flex items-center justify-between p-3 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-md mb-3 mt-3 transition-all duration-300"
           >
             <span className="font-medium text-gray-700">Projects</span>
             <span
-              className={`transform transition-transform duration-300 ${expanded === "projects" ? "rotate-180" : "rotate-0"
+              className={`transform transition-transform duration-300 ${projectsExpanded ? "rotate-180" : "rotate-0"
                 }`}
             >
               ▼
             </span>
           </button>
 
-          {expanded === "projects" && (
+          {projectsExpanded && (
             <div className="w-full">
               {/* GitHub Input Form */}
               <form onSubmit={handleGithubSubmit} className="flex items-center">

@@ -9,11 +9,11 @@ const Navbar = () => {
       </div>
 
       {/* Right Side: Navigation Links */}
-      <ul className="flex space-x-4">
+      <ul className="flex space-x-6">
         <li>
           <Link
             to="/"
-            className="hover:text-gray-400 transition-colors duration-200"
+            className="font-bold hover:text-gray-400 transition-colors duration-200"
           >
             Home
           </Link>
@@ -21,7 +21,7 @@ const Navbar = () => {
         <li>
           <Link
             to="/build-resume"
-            className="hover:text-gray-400 transition-colors duration-200"
+            className="font-bold hover:text-gray-400 transition-colors duration-200"
           >
             Build Resume
           </Link>
@@ -29,12 +29,13 @@ const Navbar = () => {
         <li>
           <Link
             to="/about"
-            className="hover:text-gray-400 transition-colors duration-200"
+            className="font-bold hover:text-gray-400 transition-colors duration-200"
           >
             About
           </Link>
         </li>
       </ul>
+
     </nav>
   );
 };
