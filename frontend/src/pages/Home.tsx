@@ -6,11 +6,20 @@ import codingPerson from '../assets/codingPerson.json'
 import build from '../assets/build.json'
 import landingPerson from '../assets/landingPerson.json'
 
-function useParallax(value, distance) {
+function useParallax(value: any, distance: number) {
   return useTransform(value, [0, 1], [-distance, distance]);
 }
 
-function Section({ content, id }) {
+interface SectionProps {
+  content: {
+    title: string;
+    description: string;
+    action?: string;
+  };
+  id: number;
+}
+
+function Section({ content, id }: SectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const { scrollYProgress } = useScroll({ target: ref });
@@ -43,8 +52,8 @@ function Section({ content, id }) {
         {id === 1 || id === 3 ? (
           <>
             <div className="w-1/2 max-w-lg">
-              <DisplayLottie 
-                animationData={id === 1 ? landingPerson : build} 
+              <DisplayLottie
+                animationData={id === 1 ? landingPerson : build}
               />
             </div>
 
@@ -70,7 +79,7 @@ function Section({ content, id }) {
               </h2>
               <p className="text-xl text-gray-600 mb-8">{content.description}</p>
             </div>
-            
+
             <div className="w-1/2 max-w-lg">
               <DisplayLottie animationData={codingPerson} />
             </div>
@@ -123,27 +132,30 @@ const Home = () => {
           style={{ scaleX }}
         />
       </div>
-      <style jsx global>{`
-        html {
-          scroll-snap-type: y mandatory;
-          overflow-x: hidden;
-        }
+      <style>
+        {`
+    html {
+      scroll-snap-type: y mandatory;
+      overflow-x: hidden;
+    }
 
-        body {
-          margin: 0;
-          padding: 0;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+    }
 
-        .snap-start {
-          scroll-snap-align: start;
-        }
+    .snap-start {
+      scroll-snap-align: start;
+    }
 
-        h3 {
-          left: calc(50% + 340px);
-          top: calc(50% - 25px);
-          color: #e5e7eb;
-        }
-      `}</style>
+    h3 {
+      left: calc(50% + 340px);
+      top: calc(50% - 25px);
+      color: #e5e7eb;
+    }
+  `}
+      </style>
+
     </>
   );
 };
