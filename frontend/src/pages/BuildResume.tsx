@@ -57,12 +57,7 @@ const BuildResume = () => {
   const [projects, setProjects] = useState<ProjectData[]>([]);
 
   // Technical Skills State
-  const [skills, setSkills] = useState({
-    programmingLanguages: "Python, C, C++, TypeScript, JavaScript, Java, SQL",
-    frameworks: "Scikit-learn, PyTorch, TensorFlow, LangChain",
-    webDev: "React.js, Next.js, Express, Node.js",
-    devOps: "Docker, Linux, GitHub, Azure DevOps"
-  });
+  const [skills, setSkills] = useState<string[]>([]);
 
   // Existing states
   const [githubLink, setGithubLink] = useState("");
@@ -84,6 +79,24 @@ const BuildResume = () => {
   const toggleExperiences = () => setExperiencesExpanded(prev => !prev);
   const toggleProjects = () => setProjectsExpanded(prev => !prev);
   const toggleSkills = () => setSkillsExpanded(prev => !prev);
+
+  // Add a new description to the skills array
+  const handleAddSkillDescription = () => {
+    setSkills([...skills, ""]); // Adds an empty description as a new skill
+  };
+
+  // Delete a description from the skills array
+  const handleDeleteSkillDescription = (index: number) => {
+    const newSkills = skills.filter((_, i) => i !== index);
+    setSkills(newSkills);
+  };
+
+  // Handle change in the description input
+  const handleChangeSkillDescription = (index: number, value: string) => {
+    const newSkills = [...skills];
+    newSkills[index] = value;
+    setSkills(newSkills);
+  };
 
   // Handle personal details changes
   const handlePersonalDetailsChange = (field: keyof PersonalDetails, value: string) => {
@@ -113,12 +126,12 @@ const BuildResume = () => {
 
   // Other functions
   // Handle description change
-  const handleDescriptionChange = (projectIndex: number, newDescription: string) => {
-    const updatedProjects = [...projects];
-    updatedProjects[projectIndex].descriptions = newDescription.split('\n');
-    setCurrentDescription(newDescription);
-    setProjects(updatedProjects);
-  };
+  // const handleDescriptionChange = (projectIndex: number, newDescription: string) => {
+  //   const updatedProjects = [...projects];
+  //   updatedProjects[projectIndex].descriptions = newDescription.split('\n');
+  //   setCurrentDescription(newDescription);
+  //   setProjects(updatedProjects);
+  // };
 
   // Handle card click to start editing
   const handleCardClick = (index: number) => {
@@ -150,14 +163,14 @@ const BuildResume = () => {
   };
 
   // Handle add description
-  const handleAddDescription = (experienceIndex: number) => {
+  const handleAddExperienceDescription = (experienceIndex: number) => {
     const newExperiences = [...experiences];
     newExperiences[experienceIndex].descriptions.push("");
     setExperiences(newExperiences);
   };
 
   // Handle delete description
-  const handleDeleteDescription = (experienceIndex: number, descriptionIndex: number) => {
+  const handleDeleteExperienceDescription = (experienceIndex: number, descriptionIndex: number) => {
     const newExperiences = [...experiences];
     newExperiences[experienceIndex].descriptions.splice(descriptionIndex, 1);
     setExperiences(newExperiences);
@@ -220,10 +233,10 @@ const BuildResume = () => {
     const doc = new jsPDF();
     const content = resumeElement.innerText || "";
 
-    const pageWidth = doc.internal.pageSize.getWidth();
+    //const pageWidth = doc.internal.pageSize.getWidth();
     const margins = 10;
     const lineHeight = 10;
-    const textWidth = pageWidth - margins * 2;
+    //const textWidth = pageWidth - margins * 2;
 
     const lines = content.split("\n");
     let yPosition = margins;
@@ -443,7 +456,7 @@ const BuildResume = () => {
                           className="w-full p-2 border rounded"
                         />
                         <button
-                          onClick={() => handleDeleteDescription(expIndex, descIndex)}
+                          onClick={() => handleDeleteExperienceDescription(expIndex, descIndex)}
                           className="opacity-0 group-hover/desc:opacity-100 text-gray-500 hover:text-red-600 transition-opacity duration-200"
                         >
                           <span className="text-xl">×</span>
@@ -451,7 +464,7 @@ const BuildResume = () => {
                       </div>
                     ))}
                     <button
-                      onClick={() => handleAddDescription(expIndex)}
+                      onClick={() => handleAddExperienceDescription(expIndex)}
                       className="w-full p-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors mt-2"
                     >
                       + Add Description
@@ -579,6 +592,53 @@ const BuildResume = () => {
           )}
         </div>
 
+        {/* Skills Descriptions Section */}
+        <div className="mb-4">
+          <button
+            onClick={toggleSkills}
+            className="w-full flex items-center justify-between p-3 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-md mb-3"
+          >
+            <span className="font-medium text-gray-700">Skills</span>
+            <span
+              className={`transform transition-transform ${skillsExpanded ? "rotate-180" : ""
+                }`}
+            >
+              ▼
+            </span>
+          </button>
+
+          {skillsExpanded && (
+            <div className="space-y-3 p-4">
+              {skills.map((desc, index) => (
+                <div key={index} className="group relative border p-4 rounded-lg">
+                  {/* Delete Skill Description Button */}
+                  <button
+                    onClick={() => handleDeleteSkillDescription(index)}
+                    className="absolute -top-2 -right-2 text-gray-500 hover:text-red-600 bg-gray-200 rounded-full p-1 w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 shadow-md transition-all duration-200"
+                  >
+                    <span className="text-xs">✕</span>
+                  </button>
+
+                  {/* Description input */}
+                  <input
+                    type="text"
+                    value={desc}
+                    onChange={(e) => handleChangeSkillDescription(index, e.target.value)}
+                    placeholder="Description"
+                    className="w-full p-2 border rounded"
+                  />
+                </div>
+              ))}
+              <button
+                onClick={handleAddSkillDescription}
+                className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Add Skill
+              </button>
+            </div>
+          )}
+        </div>
+
 
       </div>
 
@@ -637,10 +697,11 @@ const BuildResume = () => {
           <div className="mb-6">
             <h2 className="text-lg font-bold mb-2">Technical Skills</h2>
             <ul className="list-disc pl-5">
-              <li>Programming Languages: {skills.programmingLanguages}</li>
-              <li>AI/ML Frameworks: {skills.frameworks}</li>
-              <li>Web Development: {skills.webDev}</li>
-              <li>DevOps: {skills.devOps}</li>
+              {skills.length > 0 ? (
+                skills.map((skill, index) => <li key={index}>{skill}</li>)
+              ) : (
+                <li>No skills added</li>
+              )}
             </ul>
           </div>
         </div>
