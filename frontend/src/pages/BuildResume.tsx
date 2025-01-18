@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import jsPDF from "jspdf";
 
 interface ProjectData {
   repoName: string;
@@ -79,7 +80,6 @@ const BuildResume = () => {
 
       console.log(`Sending data to backend: Owner: ${owner}, Repo: ${repo}`);
 
-      // Make API call to your backend
       const response = await axios.post("http://localhost:8000/api/github-project", {
         owner,
         repo,
@@ -87,15 +87,62 @@ const BuildResume = () => {
 
       console.log("Received data from backend:", response.data);
 
-      // Add the new project data to the projects array
       setProjects([...projects, response.data]);
-      setGithubLink(""); // Clear the input field
+      setGithubLink("");
     } catch (error) {
       console.error("Error fetching repository data:", error);
       alert("Failed to fetch repository data. Please check the URL.");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const generatePDF = () => {
+    const resumeElement = document.getElementById("resume-preview");
+    if (!resumeElement) {
+      alert("Failed to find resume content.");
+      return;
+    }
+  
+    const doc = new jsPDF();
+    const content = resumeElement.innerText || ""; // Extract plain text from the element
+  
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margins = 10;
+    const lineHeight = 10;
+    const textWidth = pageWidth - margins * 2;
+  
+    const lines = content.split("\n"); // Split content into individual lines
+    let yPosition = margins;
+  
+    lines.forEach((line) => {
+      if (line.trim() === "") {
+        return;
+      }
+  
+      // Check for headline-like lines
+      const isHeadline = line.match(/^[A-Za-z\s]+(:?|(?=\s|$))$/); // Matches lines that are titles or headings
+  
+      if (isHeadline) {
+        doc.setFont("helvetica", "bold"); // Bold font for headlines
+        doc.setFontSize(14); // Larger font size
+      } else {
+        doc.setFont("helvetica", "normal"); // Normal font for regular text
+        doc.setFontSize(10); // Smaller font size
+      }
+  
+      // If the text doesn't fit on the current page, create a new page
+      if (yPosition + lineHeight > doc.internal.pageSize.getHeight() - margins) {
+        doc.addPage();
+        yPosition = margins;
+      }
+  
+      // Add the line to the PDF
+      doc.text(line, margins, yPosition);
+      yPosition += lineHeight;
+    });
+  
+    doc.save("resume.pdf");
   };
 
   return (
@@ -120,7 +167,6 @@ const BuildResume = () => {
 
           {expanded === "experiences" && (
             <div className="ml-4">
-              {/* GitHub Input Form */}
               <form onSubmit={handleGithubSubmit} className="flex items-center">
                 <input
                   type="text"
@@ -153,8 +199,6 @@ const BuildResume = () => {
                 </button>
 
               </form>
-
-              {/* List of Projects
               {projects.map((project, index) => (
                 <div
                   key={index}
@@ -286,13 +330,8 @@ const BuildResume = () => {
 
       {/* Right Side - Live Resume Preview */}
       <div className="w-1/2 p-6 bg-gray-50 shadow-md">
-        <div className="bg-white p-4 shadow rounded">
-          {/* Contact Info */}
-          <div
-            contentEditable
-            suppressContentEditableWarning
-            className="mb-6"
-          >
+        <div id="resume-preview" className="bg-white p-4 shadow rounded">
+          <div contentEditable suppressContentEditableWarning className="mb-6">
             <h1 className="text-2xl font-bold">Phong Cao</h1>
             <p className="text-sm">
               ptcao@wpi.edu ∙ 774-701-3932 ∙ linkedin.com/in/phong-cao ∙
@@ -300,24 +339,14 @@ const BuildResume = () => {
             </p>
           </div>
 
-          {/* Education */}
-          <div
-            contentEditable
-            suppressContentEditableWarning
-            className="mb-6"
-          >
+          <div contentEditable suppressContentEditableWarning className="mb-6">
             <h2 className="text-lg font-bold">Education</h2>
             <p>Worcester Polytechnic Institute, Worcester, MA</p>
             <p>M.S. in Artificial Intelligence, B.S. in Computer Science</p>
             <p>GPA: 3.95, Dean’s List</p>
           </div>
 
-          {/* Skills */}
-          <div
-            contentEditable
-            suppressContentEditableWarning
-            className="mb-6"
-          >
+          <div contentEditable suppressContentEditableWarning className="mb-6">
             <h2 className="text-lg font-bold">Skills</h2>
             <ul className="list-disc pl-5">
               <li>
@@ -332,7 +361,6 @@ const BuildResume = () => {
             </ul>
           </div>
 
-          {/* Projects */}
           <div>
             <h2 className="text-lg font-bold">Projects</h2>
             {projects.map((project, index) => (
@@ -353,6 +381,13 @@ const BuildResume = () => {
             ))}
           </div>
         </div>
+
+        <button
+          onClick={generatePDF}
+          className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
+          Download PDF
+        </button>
       </div>
     </div>
   );

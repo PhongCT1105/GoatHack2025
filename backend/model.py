@@ -68,7 +68,7 @@ if __name__ == "__main__":
     
     # Define GitHub repository details
     owner = "PhongCT1105"
-    repo = "SyntheSearch"
+    repo = "Personal_Portfolio"
 
     # Fetch repository data dynamically using Fetch.py
     repo_data = aggregate_repo_data(owner, repo, commit_limit=100)
