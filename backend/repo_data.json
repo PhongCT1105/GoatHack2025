@@ -1,0 +1,14 @@
+{
+    "Repository Name": "realtime_chat_app",
+    "Description": "A real-time chat app with JWT authentication, Socket.io messaging, online user status, and global state management using Zustand. Styled with TailwindCSS and Daisy UI, with robust error handling on both client and server sides.",
+    "Topics": [],
+    "URL": "https://github.com/giahienhoang99/realtime_chat_app",
+    "Stars": 1,
+    "Forks": 0,
+    "Languages": {},
+    "Files": [],
+    "README": "No README available.",
+    "Recent Commit Messages": [],
+    "Start Date": "2024-10-19T02:35:18Z",
+    "Last Updated": "2024-11-26T01:42:40Z"
+}
