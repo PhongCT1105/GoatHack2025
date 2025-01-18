@@ -1,0 +1,42 @@
+# Python (Backend)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.env
+.venv
+venv/
+ENV/
+env/
+*.egg-info/
+.eggs/
+migrations/
+
+# Pytest
+.cache/
+.tox/
+.pytest_cache/
+
+# IDE and OS-related files
+*.swp
+.swo
+.vscode/
+.idea/
+.DS_Store
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Logs and coverage
+*.log
+coverage/
+*.coverage
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/

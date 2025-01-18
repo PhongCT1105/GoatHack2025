@@ -1,0 +1,4 @@
+# Root-specific ignores (if needed)
+.DS_Store
+Thumbs.db
+*.log
