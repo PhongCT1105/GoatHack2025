@@ -1,7 +1,8 @@
 import os
-import json
 from openai import OpenAI
 from dotenv import load_dotenv
+import json
+from Fetch import aggregate_repo_data
 
 # Load environment variables
 load_dotenv()
@@ -14,24 +15,11 @@ client = OpenAI(
     api_key=OPENAI_API_KEY,
 )
 
-def load_repo_data(file_path):
-    """
-    Load GitHub repository data from a JSON file.
-    :param file_path: Path to the JSON file containing repository data.
-    :return: Loaded JSON data as a dictionary.
-    """
-    try:
-        with open(file_path, "r") as file:
-            return json.load(file)
-    except Exception as e:
-        print(f"Error loading repository data: {e}")
-        return None
-
 def generate_star_resume_section(repo_data):
     """
     Generate a STAR-based project section for a resume using OpenAI API.
     :param repo_data: Dictionary containing GitHub repository details.
-    :return: Generated resume section as a string.
+    :return: A dictionary with Name, Date, and Descriptions.
     """
     try:
         # Prepare the prompt with the repo data
@@ -43,35 +31,47 @@ def generate_star_resume_section(repo_data):
         Repository Name: {repo_data['Repository Name']}
         Description: {repo_data['Description']}
         Topics: {', '.join(repo_data.get('Topics', []))}
-        Stars: {repo_data['Stars']}
-        Forks: {repo_data['Forks']}
         Languages: {json.dumps(repo_data['Languages'], indent=2)}
-        Recent Commit Messages: {', '.join(repo_data['Recent Commit Messages'])}
+        Recent Commit Messages: {', '.join(repo_data['Recent Commit Messages'][:5])}  # First 5 commit messages
 
         Generate a professional and concise project section.
         """
 
         # Call OpenAI API to generate completion
         completion = client.chat.completions.create(
-            model="gpt-4",  # Using GPT-4
+            model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "system", "content": "You are a professional resume builder"},
                 {"role": "user", "content": prompt},
             ]
         )
 
-        # Return the generated content
-        return completion.choices[0].message.content.strip()
+        # Parse the result into a list of descriptions
+        result_text = completion.choices[0].message.content.strip()
+        descriptions = result_text.split("\n")
+        descriptions = [desc.strip("- ") for desc in descriptions if desc.startswith("-")]
+
+        # Return the structured data
+        return {
+            "Name": repo_data["Repository Name"],
+            "Date": f"{repo_data['Start Date']} - {repo_data['Last Updated']}",
+            "Descriptions": descriptions[:4]  # Limit to 4 descriptions
+        }
 
     except Exception as e:
         print(f"Error generating resume section: {e}")
         return None
 
 
+
 if __name__ == "__main__":
-    # Load repository data from JSON file
-    repo_data_path = "../Fetch/repo_data.json"  # Path to the JSON file
-    repo_data = load_repo_data(repo_data_path)
+    
+    # Define GitHub repository details
+    owner = "PhongCT1105"
+    repo = "SyntheSearch"
+
+    # Fetch repository data dynamically using Fetch.py
+    repo_data = aggregate_repo_data(owner, repo, commit_limit=100)
 
     if repo_data:
         # Generate STAR-based resume section
@@ -81,4 +81,4 @@ if __name__ == "__main__":
         print("Generated STAR Resume Section:")
         print(star_section)
     else:
-        print("Failed to load repository data.")
+        print("Failed to fetch repository data.")
