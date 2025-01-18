@@ -1,4 +1,3 @@
-import React from 'react';
 import "./About.css";
 import phong from './Github_Icons/phong.jpg'
 import doanh from './Github_Icons/doanh.jpg'
