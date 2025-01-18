@@ -14,7 +14,8 @@ def fetch_repo_info(owner, repo):
     """
     url = f"https://api.github.com/repos/{owner}/{repo}"
     headers = {"Authorization": f"token {github_token}"}
-    response = requests.get(url, headers=headers)
+    # response = requests.get(url, headers=headers)
+    response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
         return {
