@@ -1,14 +1,14 @@
-import React, { useRef } from "react";
-import { motion, useScroll, useSpring, useTransform, useInView } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useSpring, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import DisplayLottie from '../components/DisplayLottie'
 import codingPerson from '../assets/codingPerson.json'
 import build from '../assets/build.json'
 import landingPerson from '../assets/landingPerson.json'
 
-function useParallax(value: any, distance: number) {
-  return useTransform(value, [0, 1], [-distance, distance]);
-}
+// function useParallax(value: any, distance: number) {
+//   return useTransform(value, [0, 1], [-distance, distance]);
+// }
 
 interface SectionProps {
   content: {
@@ -22,8 +22,8 @@ interface SectionProps {
 function Section({ content, id }: SectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const { scrollYProgress } = useScroll({ target: ref });
-  const y = useParallax(scrollYProgress, 300);
+  //const { scrollYProgress } = useScroll({ target: ref });
+  //const y = useParallax(scrollYProgress, 300);
 
   const slideVariants = {
     hidden: {

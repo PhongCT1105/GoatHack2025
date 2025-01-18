@@ -62,9 +62,9 @@ const BuildResume = () => {
   // Existing states
   const [githubLink, setGithubLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [currentDescription, setCurrentDescription] = useState("");
-  const cardRefs = useRef([]);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Section expansion states
   const [personalExpanded, setPersonalExpanded] = useState(false);
