@@ -13,7 +13,7 @@ function App() {
         <nav className="flex justify-between items-center bg-[#59198B] p-4 text-white">
           {/* Left side: Resume name */}
           <div className="text-xl font-bold">
-            aiResumeBuilder
+            Repo2Resume
           </div>
 
           {/* Right side: Navigation links */}
