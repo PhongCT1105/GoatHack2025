@@ -29,6 +29,7 @@ function Section({ content, id }) {
         ) : (
           <button className="px-8 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors">
             {content.action}
+
           </button>
         )}
       </div>
