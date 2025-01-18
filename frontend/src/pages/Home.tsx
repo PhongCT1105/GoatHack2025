@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import DisplayLottie from '../components/DisplayLottie'
 import codingPerson from '../assets/codingPerson.json'
@@ -12,82 +12,80 @@ function useParallax(value, distance) {
 
 function Section({ content, id }) {
   const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
   const { scrollYProgress } = useScroll({ target: ref });
   const y = useParallax(scrollYProgress, 300);
 
+  const slideVariants = {
+    hidden: {
+      x: id % 2 === 0 ? 100 : -100,
+      opacity: 0
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
     <section className="h-screen snap-start flex justify-center items-center relative">
-      {id === 1 ? (
-        // Section 1: Coding Person Animation (Left) + Text (Right)
-        <div
-          ref={ref}
-          className="max-w-6xl w-full flex items-center justify-between px-12"
-        >
-          <div className="w-1/2 max-w-lg">
-            <DisplayLottie animationData={landingPerson} />
-          </div>
+      <motion.div
+        ref={ref}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        variants={slideVariants}
+        className={`max-w-6xl w-full flex items-center justify-between px-12 ${
+          id === 2 ? 'flex-row-reverse' : ''
+        }`}
+      >
+        {id === 1 || id === 3 ? (
+          <>
+            <div className="w-1/2 max-w-lg">
+              <DisplayLottie 
+                animationData={id === 1 ? landingPerson : build} 
+              />
+            </div>
 
-          <div className="w-1/2 text-left bg-white/80 backdrop-blur-sm p-12 rounded-xl">
-            <h2 className="text-5xl font-bold mb-6 tracking-tight">
-              {content.title}
-            </h2>
-            <p className="text-xl text-gray-600 mb-8">{content.description}</p>
-            <Link to="/build-resume">
-              <button className="px-8 py-3 bg-[#59198B] text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors">
-                {content.action}
-              </button>
-            </Link>
-          </div>
-        </div>
-      ) : id === 2 ? (
-        // Section 2: Text on the Left, Lottie Animation on the Right
-        <div
-          ref={ref}
-          className="max-w-6xl w-full flex items-center justify-between px-12"
-        >
-          {/* Text on the Left */}
-          <div className="w-1/2 text-left bg-white/80 backdrop-blur-sm p-12 rounded-xl">
-            <h2 className="text-5xl font-bold mb-6 tracking-tight">
-              {content.title}
-            </h2>
-            <p className="text-xl text-gray-600 mb-8">{content.description}</p>
-          </div>
-      
-          {/* Lottie Animation on the Right */}
-          <div className="w-1/2 max-w-lg">
-            <DisplayLottie animationData={codingPerson} />
-          </div>
-        </div>
-      ) : id === 3 ? (
-        // Section 2: Placeholder for Future Animation
-        <div
-          ref={ref}
-          className="max-w-6xl w-full flex items-center justify-between px-12"
-        >
-          <div className="w-1/2 max-w-lg">
-            {/* Placeholder Lottie Animation for Section 2 */}
-            <DisplayLottie animationData={build} />
-          </div>
-
-          <div className="w-1/2 text-left bg-white/80 backdrop-blur-sm p-12 rounded-xl">
+            <div className="w-1/2 text-left bg-white/80 backdrop-blur-sm p-12 rounded-xl">
+              <h2 className="text-5xl font-bold mb-6 tracking-tight">
+                {content.title}
+              </h2>
+              <p className="text-xl text-gray-600 mb-8">{content.description}</p>
+              {id === 1 && (
+                <Link to="/build-resume">
+                  <button className="px-8 py-3 bg-[#59198B] text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors">
+                    {content.action}
+                  </button>
+                </Link>
+              )}
+            </div>
+          </>
+        ) : id === 2 ? (
+          <>
+            <div className="w-1/2 text-left bg-white/80 backdrop-blur-sm p-12 rounded-xl">
+              <h2 className="text-5xl font-bold mb-6 tracking-tight">
+                {content.title}
+              </h2>
+              <p className="text-xl text-gray-600 mb-8">{content.description}</p>
+            </div>
+            
+            <div className="w-1/2 max-w-lg">
+              <DisplayLottie animationData={codingPerson} />
+            </div>
+          </>
+        ) : (
+          <div className="max-w-2xl text-center bg-white/80 backdrop-blur-sm p-12 rounded-xl">
             <h2 className="text-5xl font-bold mb-6 tracking-tight">
               {content.title}
             </h2>
             <p className="text-xl text-gray-600 mb-8">{content.description}</p>
           </div>
-        </div>
-      ) : (
-        // Default Layout for Other Sections
-        <div
-          ref={ref}
-          className="max-w-2xl text-center bg-white/80 backdrop-blur-sm p-12 rounded-xl"
-        >
-          <h2 className="text-5xl font-bold mb-6 tracking-tight">
-            {content.title}
-          </h2>
-          <p className="text-xl text-gray-600 mb-8">{content.description}</p>
-        </div>
-      )}
+        )}
+      </motion.div>
     </section>
   );
 }
