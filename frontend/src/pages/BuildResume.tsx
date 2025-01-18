@@ -166,7 +166,7 @@ const BuildResume = () => {
           </button>
 
           {expanded === "experiences" && (
-            <div className="ml-4">
+            <div className="w-full">
               <form onSubmit={handleGithubSubmit} className="flex items-center">
                 <input
                   type="text"
@@ -233,7 +233,7 @@ const BuildResume = () => {
           </button>
 
           {expanded === "projects" && (
-            <div className="ml-4">
+            <div className="w-full">
               {/* GitHub Input Form */}
               <form onSubmit={handleGithubSubmit} className="flex items-center">
                 <input
