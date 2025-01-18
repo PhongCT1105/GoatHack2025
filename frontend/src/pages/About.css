@@ -1,0 +1,31 @@
+.Person{
+    width: 25vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageIcon{
+    width:12vw;
+    height: 12vw;
+    border-radius: 6vw;
+    border: 1px black solid;
+}
+
+#Why{
+    width: 100vw;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.large_text{
+    font-size:50px;
+}
+
+.medium_text{
+    font-size: 25px;
+}
