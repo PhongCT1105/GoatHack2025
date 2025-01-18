@@ -1,6 +1,6 @@
 // src/components/DisplayLottie.tsx
 
-import React, { Component, Suspense } from "react";
+import { Component, Suspense } from "react";
 import Lottie from "lottie-react";
 
 interface DisplayLottieProps {
