@@ -11,7 +11,7 @@ const About = () => {
         <span className='large_text'>Why do we do this</span>
         <span className='medium_text'>Cause we like to move it move it Cause we like to move it move it Cause we like to move it move it </span>
       </div>
-      <div className="flex items-center justify-center bg-gray-100">
+      <div className="flex items-center justify-center">
         <div className='Person'>
           <img className='imageIcon' src={doanh} alt="Le Dang Doanh Phung"/>
           <div>Le Dang Doanh Phung</div>

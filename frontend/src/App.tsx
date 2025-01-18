@@ -10,7 +10,7 @@ function App() {
     <Router>
       <div>
         {/* Navbar */}
-        <nav className="flex justify-between items-center bg-red-800 p-4 text-white">
+        <nav className="flex justify-between items-center bg-[#59198B] p-4 text-white">
           {/* Left side: Resume name */}
           <div className="text-xl font-bold">
             aiResumeBuilder
