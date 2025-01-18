@@ -27,9 +27,14 @@ class GitHubRepo(BaseModel):
 @app.post("/api/github-project")
 async def get_github_project(repo_data: GitHubRepo):
     try:
-        # Fetch GitHub data using aggregate_repo_data
+        print(f"Received request for owner: {repo_data.owner}, repo: {repo_data.repo}")
         logging.info(f"Fetching data for owner: {repo_data.owner}, repo: {repo_data.repo}")
+        
+        # Fetch GitHub data using aggregate_repo_data
         repo_details = aggregate_repo_data(repo_data.owner, repo_data.repo)
+        
+        # Debugging: Print fetched repo details
+        print(f"Fetched repo details: {repo_details}")
         
         if not repo_details:
             logging.error(f"Repository not found: {repo_data.owner}/{repo_data.repo}")
@@ -38,18 +43,27 @@ async def get_github_project(repo_data: GitHubRepo):
         # Generate the STAR-based resume section
         star_resume = generate_star_resume_section(repo_details)
         
+        # Debugging: Print generated STAR resume
+        print(f"Generated STAR resume section: {star_resume}")
+        
         if not star_resume:
             logging.error("Error generating STAR resume section.")
             raise HTTPException(status_code=500, detail="Failed to generate resume section")
         
         # Return the structured data for the frontend
-        return {
+        result = {
             "repoName": star_resume["Name"],
             "date": star_resume["Date"],
             "descriptions": star_resume["Descriptions"]
         }
+        
+        # Debugging: Print final response
+        print(f"Returning response: {result}")
+        return result
 
     except Exception as e:
+        # Debugging: Print the exception details
+        print(f"Exception occurred: {str(e)}")
         logging.error(f"Error processing request: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
@@ -57,4 +71,5 @@ async def get_github_project(repo_data: GitHubRepo):
 # Test that the API is working
 @app.get("/")
 async def root():
+    print("Root endpoint accessed.")
     return {"message": "Hello World"}

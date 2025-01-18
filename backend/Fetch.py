@@ -124,9 +124,8 @@ def save_to_file(data, filename="repo_data.json"):
         json.dump(data, file, indent=4)
     print(f"Data saved to {filename}")
 
-# Example usage
 # owner = "PhongCT1105"
-# repo = "SyntheSearch"
+# repo = "Neetcode"
 
 # repo_data = aggregate_repo_data(owner, repo, commit_limit=100)
 

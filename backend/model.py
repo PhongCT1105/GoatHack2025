@@ -24,17 +24,23 @@ def generate_star_resume_section(repo_data):
     try:
         # Prepare the prompt with the repo data
         prompt = f"""
-        Create a project section for a resume using the STAR (Situation, Task, Action, Result) method. 
-        Each component should be a concise bullet point of 1-2 sentences.
+        Generate a professional and concise project description for a resume using the STAR (Situation, Task, Action, Result) method. 
+        Each component must consist of a single, concise sentence written in formal, action-oriented language without personal pronouns or references.
 
         Repository Details:
-        Repository Name: {repo_data['Repository Name']}
-        Description: {repo_data['Description']}
-        Topics: {', '.join(repo_data.get('Topics', []))}
-        Languages: {json.dumps(repo_data['Languages'], indent=2)}
-        Recent Commit Messages: {', '.join(repo_data['Recent Commit Messages'][:5])}  # First 5 commit messages
+        - Repository Name: {repo_data['Repository Name']}
+        - Description: {repo_data['Description']}
+        - Topics: {', '.join(repo_data.get('Topics', []))}
+        - Languages: {json.dumps(repo_data['Languages'], indent=2)}
+        - Recent Commit Messages: {', '.join(repo_data['Recent Commit Messages'][:50])}  # First 50 commit messages
 
-        Generate a professional and concise project section.
+        Format the response exactly as:
+        - Situation: [Your sentence here]
+        - Task: [Your sentence here]
+        - Action: [Your sentence here]
+        - Result: [Your sentence here]
+
+        Ensure the output is concise, professional, and directly applicable to a resume.
         """
 
         # Call OpenAI API to generate completion
@@ -46,16 +52,16 @@ def generate_star_resume_section(repo_data):
             ]
         )
 
-        # Parse the result into a list of descriptions
+        # Parse the result
         result_text = completion.choices[0].message.content.strip()
-        descriptions = result_text.split("\n")
-        descriptions = [desc.strip("- ") for desc in descriptions if desc.startswith("-")]
+        descriptions = [line.split(": ", 1)[1].strip() for line in result_text.split("\n") if ": " in line]
 
         # Return the structured data
         return {
             "Name": repo_data["Repository Name"],
             "Date": f"{repo_data['Start Date']} - {repo_data['Last Updated']}",
-            "Descriptions": descriptions[:4]  # Limit to 4 descriptions
+            "Languages": list(repo_data["Languages"].keys()),
+            "Descriptions": descriptions[:4]  # Ensures 4 sentences (one for each STAR component)
         }
 
     except Exception as e:
@@ -68,7 +74,7 @@ if __name__ == "__main__":
     
     # Define GitHub repository details
     owner = "PhongCT1105"
-    repo = "Personal_Portfolio"
+    repo = "Neetcode"
 
     # Fetch repository data dynamically using Fetch.py
     repo_data = aggregate_repo_data(owner, repo, commit_limit=100)
