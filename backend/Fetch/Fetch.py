@@ -1,47 +1,136 @@
 import requests
+import json
+import base64
+from dotenv import load_dotenv
+import os
 
-def fetch_repo_info(owner, repo, token=None):
+load_dotenv()
+
+github_token = os.getenv("GITHUB_TOKEN")
+
+def fetch_repo_info(owner, repo):
+    """
+    Fetch basic repository information including topics and description.
+    """
     url = f"https://api.github.com/repos/{owner}/{repo}"
-    headers = {"Authorization": f"token {token}"} if token else {}
+    headers = {"Authorization": f"token {github_token}"}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        return response.json()  # Basic repository info
-    else:
-        print(f"Error: {response.status_code}, {response.json()}")
-        return None
-    
-def get_repo_structure(owner, repo, path="", token=None):
+        data = response.json()
+        return {
+            "name": data.get("name"),
+            "description": data.get("description", "No description available."),
+            "topics": data.get("topics", []),
+            "url": data.get("html_url"),
+            "stars": data.get("stargazers_count"),
+            "forks": data.get("forks_count"),
+            "created_at": data.get("created_at"),
+            "pushed_at": data.get("pushed_at"),
+        }
+    print(f"Error fetching repo info for {owner}/{repo}: {response.status_code}")
+    return None
+
+def fetch_repo_files(owner, repo, path=""):
     """
-    Recursively fetch the repository structure, including files and folders.
+    Recursively fetch all file names in the repository.
     """
     url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}"
-    headers = {"Authorization": f"token {token}"} if token else {}
+    headers = {"Authorization": f"token {github_token}"}
     response = requests.get(url, headers=headers)
-    
-    if response.status_code != 200:
-        print(f"Error fetching repo structure at path '{path}': {response.status_code}")
+    if response.status_code == 200:
+        items = response.json()
+        file_list = []
+        for item in items:
+            if item["type"] == "file":
+                file_list.append(item["path"])
+            elif item["type"] == "dir":
+                file_list.extend(fetch_repo_files(owner, repo, item["path"]))
+        return file_list
+    print(f"Error fetching files for {owner}/{repo} at path '{path}': {response.status_code}")
+    return []
+
+def fetch_repo_languages(owner, repo):
+    """
+    Fetch programming languages used in the repository and their percentages.
+    """
+    url = f"https://api.github.com/repos/{owner}/{repo}/languages"
+    headers = {"Authorization": f"token {github_token}"}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        total_bytes = sum(data.values())
+        return {lang: round((bytes / total_bytes) * 100, 2) for lang, bytes in data.items()}
+    print(f"Error fetching languages for {owner}/{repo}: {response.status_code}")
+    return {}
+
+def fetch_readme(owner, repo):
+    """
+    Fetch and decode the README file content if available.
+    """
+    url = f"https://api.github.com/repos/{owner}/{repo}/contents/README.md"
+    headers = {"Authorization": f"token {github_token}"}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        readme_data = response.json()
+        return base64.b64decode(readme_data["content"]).decode("utf-8")
+    print(f"README not found for {owner}/{repo}: {response.status_code}")
+    return "No README available."
+
+def fetch_commit_messages(owner, repo, limit=100):
+    """
+    Fetch recent commit messages (up to the specified limit).
+    """
+    url = f"https://api.github.com/repos/{owner}/{repo}/commits"
+    headers = {"Authorization": f"token {github_token}"}
+    params = {"per_page": min(limit, 100)}  # GitHub API max is 100 per page
+    response = requests.get(url, headers=headers, params=params)
+    if response.status_code == 200:
+        commits = response.json()
+        return [commit["commit"]["message"] for commit in commits]
+    print(f"Error fetching commits for {owner}/{repo}: {response.status_code}")
+    return []
+
+def aggregate_repo_data(owner, repo, commit_limit=100):
+    """
+    Aggregate all metadata for a repository, including commit messages and basic information.
+    """
+    repo_info = fetch_repo_info(owner, repo)
+    repo_languages = fetch_repo_languages(owner, repo)
+    readme_content = fetch_readme(owner, repo)
+    all_files = fetch_repo_files(owner, repo)
+    recent_commit_messages = fetch_commit_messages(owner, repo, limit=commit_limit)
+
+    if not repo_info:
+        print(f"Failed to fetch repository data for {owner}/{repo}.")
         return None
 
-    structure = response.json()
-    repo_structure = []
+    return {
+        "Repository Name": repo_info["name"],
+        "Description": repo_info["description"],
+        "Topics": repo_info["topics"],
+        "URL": repo_info["url"],
+        "Stars": repo_info["stars"],
+        "Forks": repo_info["forks"],
+        "Languages": repo_languages,
+        "Files": all_files,
+        "README": readme_content,
+        "Recent Commit Messages": recent_commit_messages,
+        "Start Date": repo_info["created_at"],
+        "Last Updated": repo_info["pushed_at"],
+    }
 
-    for item in structure:
-        if item["type"] == "file":
-            repo_structure.append(item["path"])  # Full path of the file
-        elif item["type"] == "dir":
-            # Recursively fetch contents of the folder
-            sub_structure = get_repo_structure(owner, repo, item["path"], token)
-            if sub_structure:
-                repo_structure.extend(sub_structure)
-
-    return repo_structure
+def save_to_file(data, filename="repo_data.json"):
+    """
+    Save the aggregated repository data to a JSON file.
+    """
+    with open(filename, "w") as file:
+        json.dump(data, file, indent=4)
+    print(f"Data saved to {filename}")
 
 # Example usage
 owner = "PhongCT1105"
 repo = "SyntheSearch"
-# token = "your_personal_access_token"  # Optional
-repo_info = fetch_repo_info(owner, repo)
-repo_structure = get_repo_structure(owner, repo)
+repo_data = aggregate_repo_data(owner, repo, commit_limit=100)
 
-print(repo_info)
-print(repo_structure)
+if repo_data:
+    save_to_file(repo_data)

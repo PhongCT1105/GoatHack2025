@@ -1,0 +1,46 @@
+{
+    "Repository Name": "SyntheSearch",
+    "Description": "# \ud83d\udd75\ufe0f\u200d\u2642\ufe0f SyntheSearch\n\n### \ud83d\udd8b\ufe0f Authors\n\n- **Lead Project:** Phong Cao\n- **AI Developer:** Phong Cao\n- **Backend:** Phong Cao, Hien Hoang\n- **Frontend:** Doanh Phung, Minh Bui\n\n---\n\n## \ud83c\udf1f Project Overview\n**SyntheSearch**: A smart research tool that finds and synthesizes the most relevant papers, saving researchers time and enhancing insight.\n\n---\n\n### \ud83d\ude80 **Getting Started**\n\n#### **\ud83d\udee0\ufe0f Start Server (Backend)**\n\n1. Navigate to the backend directory:\n   ```bash\n   cd backend\n   ```\n\n2. Set up a virtual environment:\n   ```bash\n   python3 -m venv venv\n   ```\n\n3. Activate the virtual environment:\n   ```bash\n   source venv/bin/activate\n   ```\n\n4. Install dependencies:\n   ```bash\n   pip install -r requirement.txt\n   ```\n   > **\u26a0\ufe0f Note:** On iOS, ensure `pywin32` is removed from `requirement.txt`.\n\n5. Run the server:\n   ```bash\n   uvicorn main:app --reload\n   ```\n\n---\n\n#### **\ud83d\udcbb Start Client (Frontend)**\n\n1. Navigate to the frontend directory:\n   ```bash\n   cd frontend\n   ```\n\n2. Install dependencies:\n   ```bash\n   npm i\n   ```\n\n3. Start the development server:\n   ```bash\n   npm run dev\n   ```\n\n---\n\n## \ud83d\udcda **Introduction**\nSyntheSearch is a web application designed to streamline the research process for students and researchers by efficiently locating relevant research papers. Researchers often spend hours sifting through papers, hoping to find the studies that best match their interests. SyntheSearch aims to reduce this time by intelligently suggesting the most relevant papers and generating a synthesis to reveal how the studies interrelate, offering users an insightful overview that saves time and enhances understanding.\n\n---\n\n## \ud83d\udca1 **Inspiration**\nThe inspiration for SyntheSearch came from our own experiences as students. Before HackUMass XII, one team member struggled to find research papers on machine-learning applications in cancer detection. The process of locating credible sources was exhausting and time-consuming, even with optimized library search tools. This frustration inspired us to develop a more efficient search engine that leverages Large Language Models (LLM) and vector databases to quickly surface relevant research and summar...\n\n---\n\n## \ud83d\udee0\ufe0f **How We Built the Project**\nWe chose Python for the back end because of its extensive frameworks for AI development. Databricks was used to streamline our machine-learning pipeline. Here\u2019s how we approached building SyntheSearch:\n\n1. **\ud83d\udcca Data Collection**: We started by scraping data from the CORE collection of open-access research papers.\n2. **\ud83d\udd0d Embedding**: Using LangChain, we implemented OpenAI's text-embedding-3-large model to convert paper texts into vector embeddings.\n3. **\ud83d\udcc2 Storage**: We utilized LanceDB as our vector database, storing the embedded vectors for fast and efficient retrieval.\n4. **\ud83d\udcdd Summarization and Synthesis**: We employed OpenAI\u2019s GPT-4o-mini model to generate summaries, suggestions, and synthesized insights.\n5. **\ud83c\udf10 Front-End**: We built the user interface using React.JS with a TypeScript template, providing a clean and responsive experience for users.\n\n---\n\n## \ud83d\udea7 **Challenges Faced**\n- **\ud83d\udd04 GitHub Workflow Issues**: Frequent pull request conflicts slowed our progress due to merge conflicts.\n- **\ud83d\udde3\ufe0f Communication Gaps**: Miscommunication led to duplicated work and inefficiencies.\n\n---\n\n## \ud83c\udf93 **Lessons Learned**\nThis project was an invaluable learning experience. As it was our first LLM project, we gained hands-on experience with GenAI technologies, particularly the power of vector databases. We learned the importance of clear team communication, and we now have a deeper understanding of LLMs and their capabilities in revolutionizing information retrieval.\n\n---\n\n## \ud83d\udee0\ufe0f **Built With**\n- **\ud83d\udc0d Python** (Backend Development)\n- **\ud83d\udd17 LangChain** (Embedding)\n- **\ud83d\udcc2 LanceDB** (Vector Database)\n- **\ud83e\udd16 OpenAI GPT Models** (Summarization and Synthesis)\n- **\u269b\ufe0f React** with **TypeScript** (Front-End Development)\n- **\ud83c\udfa8 TailwindCSS** (Styling)\n- **\u26a1 Vite** (Tooling)\n- **\ud83e\uddea Databricks** (Machine Learning Pipeline)\n\n---\n\n## \ud83c\udf31 **Empowering Researchers**\nThrough SyntheSearch, we\u2019re excited to contribute to the efficiency of the research process, empowering researchers to focus on insights rather than information overload.",
+    "Language Breakdown": {
+        "Jupyter Notebook": 43.65,
+        "TypeScript": 43.02,
+        "Python": 10.05,
+        "CSS": 1.85,
+        "JavaScript": 1.26,
+        "HTML": 0.17
+    },
+    "Commits": [
+        {
+            "sha": "428199cc3bb213fb1e8ded33cda31079c72c9232",
+            "author": "Phong Cao",
+            "message": "Update README.md",
+            "date": "2024-11-19T01:24:13Z"
+        },
+        {
+            "sha": "c27981bd3c742c2eab90a407d3ebdd7b8903d320",
+            "author": "Phong Cao",
+            "message": "Update README.md",
+            "date": "2024-11-19T01:22:49Z"
+        },
+        {
+            "sha": "c5f85ec36de9bbd565b1c3c2ef66bbb2e3480137",
+            "author": "Phong Cao",
+            "message": "Update README.md",
+            "date": "2024-11-19T01:20:09Z"
+        },
+        {
+            "sha": "98ded1b2b6cc3ebaadd8072812b1d61d04f01754",
+            "author": "Phong Cao",
+            "message": "Update README.md",
+            "date": "2024-11-19T01:12:21Z"
+        },
+        {
+            "sha": "3fb99c47e1ebb4f4873e050c2d2890b0be85ca4c",
+            "author": "Phong Cao",
+            "message": "Update README.md",
+            "date": "2024-11-19T01:11:17Z"
+        }
+    ],
+    "Start Date": "2024-11-09T02:02:56Z",
+    "End Date": "2024-11-19T01:24:14Z"
+}
