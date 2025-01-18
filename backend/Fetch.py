@@ -92,27 +92,28 @@ def aggregate_repo_data(owner, repo, commit_limit=100):
     """
     Aggregate all metadata for a repository, including commit messages and basic information.
     """
-    repo_info = fetch_repo_info(owner, repo)
-    repo_languages = fetch_repo_languages(owner, repo)
-    readme_content = fetch_readme(owner, repo)
-    all_files = fetch_repo_files(owner, repo)
-    recent_commit_messages = fetch_commit_messages(owner, repo, limit=commit_limit)
+    repo_info = fetch_repo_info(owner, repo) or {}
+    repo_languages = fetch_repo_languages(owner, repo) or {}
+    readme_content = fetch_readme(owner, repo) or "No README available."
+    all_files = fetch_repo_files(owner, repo) or []
+    recent_commit_messages = fetch_commit_messages(owner, repo, limit=commit_limit) or []
 
-    if not repo_info:
-        print(f"Failed to fetch repository data for {owner}/{repo}.")
+    if not repo_info.get("name"):
+        print(f"Repository {owner}/{repo} has missing 'name'. Skipping.")
         return None
 
     return {
-        "Repository Name": repo_info["name"],
-        "Description": repo_info["description"],
-        "Topics": repo_info["topics"],
+        "Repository Name": repo_info.get("name", "Unknown Repository"),
+        "Description": repo_info.get("description", "No description available."),
+        "Topics": repo_info.get("topics", []),
         "Languages": repo_languages,
         "Files": all_files,
         "README": readme_content,
         "Recent Commit Messages": recent_commit_messages,
-        "Start Date": repo_info["created_at"],
-        "Last Updated": repo_info["pushed_at"],
+        "Start Date": repo_info.get("created_at", "Unknown Start Date"),
+        "Last Updated": repo_info.get("pushed_at", "Unknown Last Updated"),
     }
+
 
 def save_to_file(data, filename="repo_data.json"):
     """
