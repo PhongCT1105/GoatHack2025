@@ -38,9 +38,7 @@ function Section({ content, id }) {
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
         variants={slideVariants}
-        className={`max-w-6xl w-full flex items-center justify-between px-12 ${
-          id === 2 ? 'flex-row-reverse' : ''
-        }`}
+        className="max-w-6xl w-full flex items-center justify-between px-12"
       >
         {id === 1 || id === 3 ? (
           <>
