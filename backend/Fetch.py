@@ -22,9 +22,6 @@ def fetch_repo_info(owner, repo):
             "name": data.get("name"),
             "description": data.get("description", "No description available."),
             "topics": data.get("topics", []),
-            "url": data.get("html_url"),
-            "stars": data.get("stargazers_count"),
-            "forks": data.get("forks_count"),
             "created_at": data.get("created_at"),
             "pushed_at": data.get("pushed_at"),
         }
@@ -109,9 +106,6 @@ def aggregate_repo_data(owner, repo, commit_limit=100):
         "Repository Name": repo_info["name"],
         "Description": repo_info["description"],
         "Topics": repo_info["topics"],
-        "URL": repo_info["url"],
-        "Stars": repo_info["stars"],
-        "Forks": repo_info["forks"],
         "Languages": repo_languages,
         "Files": all_files,
         "README": readme_content,
@@ -129,9 +123,10 @@ def save_to_file(data, filename="repo_data.json"):
     print(f"Data saved to {filename}")
 
 # Example usage
-owner = "PhongCT1105"
-repo = "SyntheSearch"
-repo_data = aggregate_repo_data(owner, repo, commit_limit=100)
+# owner = "PhongCT1105"
+# repo = "SyntheSearch"
 
-if repo_data:
-    save_to_file(repo_data)
+# repo_data = aggregate_repo_data(owner, repo, commit_limit=100)
+
+# if repo_data:
+#     save_to_file(repo_data)
