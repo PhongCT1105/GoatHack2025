@@ -214,7 +214,7 @@ const BuildResume = () => {
                     ))}
                   </ul>
                 </div>
-              ))} */}
+              ))}
             </div>
           )}
         </div>
