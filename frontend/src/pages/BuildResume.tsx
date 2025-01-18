@@ -3,9 +3,8 @@ import axios from 'axios';
 
 interface ProjectData {
   repoName: string;
-  description: string;
-  languages: Record<string, number>;
-  topics: string[];
+  date: string;
+  descriptions: string[];
 }
 
 const BuildResume = () => {
@@ -33,18 +32,17 @@ const BuildResume = () => {
       // Make API call to your backend
       const response = await axios.post('http://localhost:8000/api/github-project', {
         owner,
-        repo
+        repo,
       });
 
-      console.log("Received data from backend:", response.data);
+      console.log('Received data from backend:', response.data);
 
       // Add the new project data to the projects array
       setProjects([...projects, response.data]);
       setGithubLink(''); // Clear the input field
     } catch (error) {
       console.error('Error fetching repository data:', error);
-      // You can display the error message to the user
-      alert("Failed to fetch repository data. Please check the URL.");
+      alert('Failed to fetch repository data. Please check the URL.');
     } finally {
       setIsLoading(false);
     }
@@ -88,23 +86,14 @@ const BuildResume = () => {
               {projects.map((project, index) => (
                 <div key={index} className="mb-4 p-4 border rounded">
                   <h3 className="font-bold">{project.repoName}</h3>
-                  <p className="text-sm">{project.description}</p>
-                  <div className="mt-2">
-                    <strong>Languages:</strong>
-                    {Object.entries(project.languages).map(([lang, percent]) => (
-                      <span key={lang} className="mr-2">
-                        {lang}: {percent}%
-                      </span>
+                  <p className="text-sm text-gray-600">{project.date}</p>
+                  <ul className="mt-2 list-disc pl-5">
+                    {project.descriptions.map((desc, descIndex) => (
+                      <li key={descIndex} className="text-sm">
+                        {desc}
+                      </li>
                     ))}
-                  </div>
-                  <div className="mt-2">
-                    <strong>Topics:</strong>
-                    {project.topics.map((topic) => (
-                      <span key={topic} className="mr-2 px-2 py-1 bg-gray-200 rounded-full text-sm">
-                        {topic}
-                      </span>
-                    ))}
-                  </div>
+                  </ul>
                 </div>
               ))}
             </div>
