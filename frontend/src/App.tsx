@@ -17,11 +17,11 @@ function App() {
           </div>
 
           {/* Right side: Navigation links */}
-          <ul className="flex space-x-4">
+          <ul className="flex space-x-10">
             <li>
               <Link
                 to="/"
-                className="hover:text-gray-400 transition-colors duration-200"
+                className="font-bold hover:text-gray-400 transition-colors duration-200"
               >
                 Home
               </Link>
@@ -29,7 +29,7 @@ function App() {
             <li>
               <Link
                 to="/build-resume"
-                className="hover:text-gray-400 transition-colors duration-200"
+                className="font-bold hover:text-gray-400 transition-colors duration-200"
               >
                 Build Resume
               </Link>
@@ -37,7 +37,7 @@ function App() {
             <li>
               <Link
                 to="/about"
-                className="hover:text-gray-400 transition-colors duration-200"
+                className="font-bold hover:text-gray-400 transition-colors duration-200"
               >
                 About
               </Link>
