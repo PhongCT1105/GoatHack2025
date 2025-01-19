@@ -288,6 +288,18 @@ const BuildResume = () => {
     }
   }, []);
 
+  const formatDate = (date: string) => {
+    const [startDate, endDate] = date.split(' - ');
+    
+    // Format the start date and end date
+    const format = (d: string) => {
+      const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short' };
+      return new Date(d).toLocaleDateString('en-US', options);
+    };
+    
+    return `${format(startDate)} - ${format(endDate)}`;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 50 }}
@@ -571,7 +583,7 @@ const BuildResume = () => {
                     </button>
 
                     <h3 className="font-semibold text-lg">{project.repoName}</h3>
-                    <p className="text-xs text-gray-500">{project.date}</p>
+                    <p className="text-xs text-gray-500">{formatDate(project.date)}</p>
 
                     <div className="mt-2">
                       {editingIndex === index ? (
@@ -702,7 +714,7 @@ const BuildResume = () => {
               {projects.map((project, index) => (
                 <div key={index} className="mb-4">
                   <p className="font-semibold">{project.repoName}</p>
-                  <p className="text-sm text-gray-600">{project.date}</p>
+                  <p className="text-sm text-gray-600">{formatDate(project.date)}</p>
                   <ul className="list-disc pl-5">
                     {project.descriptions.map((desc, i) => (
                       <li key={i}>{desc}</li>
