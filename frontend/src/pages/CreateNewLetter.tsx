@@ -2,7 +2,27 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'
 
-function EnterJobDetails({ onBack, onContinue, jobTitle, setJobTitle, companyName, setCompanyName, jobDescription, setJobDescription }) {
+interface EnterJobDetailsProps {
+    onBack: () => void; 
+    onContinue: () => void;  
+    jobTitle: string;  
+    setJobTitle: (value: string) => void;  
+    companyName: string;  
+    setCompanyName: (value: string) => void; 
+    jobDescription: string;  
+    setJobDescription: (value: string) => void; 
+}
+
+const EnterJobDetails: React.FC<EnterJobDetailsProps> = ({ 
+    onBack, 
+    onContinue, 
+    jobTitle, 
+    setJobTitle, 
+    companyName, 
+    setCompanyName, 
+    jobDescription, 
+    setJobDescription 
+}) => {
     return (
         <div className="w-full max-w-3xl mx-auto">
             <h1 className="text-2xl font-bold text-gray-800 mb-2">
@@ -50,7 +70,24 @@ function EnterJobDetails({ onBack, onContinue, jobTitle, setJobTitle, companyNam
     );
 }
 
-function EnterName({ onBack, onContinue, firstName, setFirstName, lastName, setLastName }) {
+
+interface EnterNameProps {
+    onBack: () => void;
+    onContinue: () => void;
+    firstName: string;
+    setFirstName: (value: string) => void;
+    lastName: string;
+    setLastName: (value: string) => void;
+}
+
+const EnterName: React.FC<EnterNameProps> = ({
+    onBack,
+    onContinue,
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+}) => {
     return (
         <div className="w-full max-w-3xl mx-auto">
             <h1 className="text-2xl font-bold text-gray-800 mb-2">
@@ -93,7 +130,19 @@ function EnterName({ onBack, onContinue, firstName, setFirstName, lastName, setL
 }
 
 
-function WorkingSkills({ onBack, onContinue, selectedSkills, setSelectedSkills }) {
+interface WorkingSkillsProps {
+    onBack: () => void;
+    onContinue: () => void;
+    selectedSkills: string[];
+    setSelectedSkills: (skills: string[]) => void;
+}
+
+const WorkingSkills: React.FC<WorkingSkillsProps> = ({
+    onBack,
+    onContinue,
+    selectedSkills,
+    setSelectedSkills,
+}) => {
     const skillsList = [
         "Collaboration",
         "Leadership",
@@ -117,7 +166,7 @@ function WorkingSkills({ onBack, onContinue, selectedSkills, setSelectedSkills }
         "Interpersonal Skills"
     ];
 
-    const toggleSkill = (skill) => {
+    const toggleSkill = (skill: string) => {
         if (selectedSkills.includes(skill)) {
             setSelectedSkills(selectedSkills.filter(s => s !== skill));
         } else {
@@ -166,15 +215,18 @@ function WorkingSkills({ onBack, onContinue, selectedSkills, setSelectedSkills }
     );
 }
 
+type CreateNewLetterProps = {
+    onBackToHome: () => void;
+};
 
-function CreateNewLetter({ onBackToHome }) {
+function CreateNewLetter({ onBackToHome }: CreateNewLetterProps) {
     const [section, setSection] = useState('name'); // 'name', 'job', or 'skills'
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [jobTitle, setJobTitle] = useState('');
     const [companyName, setCompanyName] = useState('');
     const [jobDescription, setJobDescription] = useState('');
-    const [selectedSkills, setSelectedSkills] = useState([]);
+    const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
 
     const handleNameContinue = () => {
         if (firstName && lastName) {

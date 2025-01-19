@@ -1,4 +1,5 @@
 import './App.css'
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -6,18 +7,18 @@ import BuildResume from './pages/BuildResume';
 import CoverLetter from './pages/CoverLetter'
 
 function App() {
+  // Add state to control navbar visibility at the app level
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
 
   return (
     <Router>
       <div>
-        {/* Navbar */}
-        <nav className="flex justify-between items-center bg-[#59198B] p-4 text-white">
-          {/* Left side: Resume name */}
+        {/* Navbar with visibility controlled by state */}
+        <nav className={`flex justify-between items-center bg-[#59198B] p-4 text-white ${!isNavbarVisible ? 'hidden' : ''}`}>
           <div className="text-xl font-bold">
             Repo2Resume
           </div>
 
-          {/* Right side: Navigation links */}
           <ul className="flex space-x-10">
             <li>
               <Link
@@ -54,16 +55,18 @@ function App() {
           </ul>
         </nav>
 
-        {/* Define Routes */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/build-resume" element={<BuildResume />} />
           <Route path="/about" element={<About />} />
-          <Route path="/cover-letter" element={<CoverLetter />}/>
+          <Route 
+            path="/cover-letter" 
+            element={<CoverLetter setNavbarVisible={setIsNavbarVisible} />}
+          />
         </Routes>
       </div>
     </Router>
-  )
+  );
 }
 
 export default App
