@@ -5,6 +5,7 @@ import EnterJobDetails from '../components/EnterJobDetails';
 import WorkingSkills from '../components/WorkingSkills';
 import ProgressBar from '../components/ProgressBar';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 type CreateNewLetterProps = {
     onBackToHome: () => void;
@@ -52,11 +53,11 @@ const CreateNewLetter: React.FC<CreateNewLetterProps> = ({ onBackToHome }) => {
         }
     };
 
-    const handleCopyToClipboard = () => {
-        if (coverLetter) {
-            navigator.clipboard.writeText(coverLetter);
-            alert('Cover letter copied to clipboard!');
-        }
+    const navigate = useNavigate();
+
+    const handleNavigateHome = () => {
+        window.scrollTo(0, 0);
+        navigate('/');
     };
 
     const handleDownload = () => {
@@ -85,59 +86,62 @@ const CreateNewLetter: React.FC<CreateNewLetterProps> = ({ onBackToHome }) => {
     return (
         <div className="flex h-screen">
             {/* Sidebar */}
-            <div className="w-64 min-w-[256px] h-screen bg-white p-6 fixed left-0">
-                <div className="space-y-6">
-                    <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />
-                    <div className="mt-6 space-y-6">
-                        <div className="flex items-center space-x-4">
-                            <div
-                                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                    currentStep >= 1 ? 'bg-[#59198B] text-white' : 'bg-gray-300'
-                                }`}
-                            >
-                                1
+            {section !== 'result' && (
+                <div className="w-64 min-w-[256px] h-screen bg-white p-6 fixed left-0">
+                    <div className="space-y-6">
+                        <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />
+                        <div className="mt-6 space-y-6">
+                            <div className="flex items-center space-x-4">
+                                <div
+                                    className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 1 ? 'bg-[#59198B] text-white' : 'bg-gray-300'
+                                        }`}
+                                >
+                                    1
+                                </div>
+                                <span className={currentStep === 1 ? 'font-bold' : 'text-gray-500'}>
+                                    General Information
+                                </span>
                             </div>
-                            <span className={currentStep === 1 ? 'font-bold' : 'text-gray-500'}>
-                                General Information
-                            </span>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <div
-                                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                    currentStep >= 2 ? 'bg-[#59198B] text-white' : 'bg-gray-300'
-                                }`}
-                            >
-                                2
+                            <div className="flex items-center space-x-4">
+                                <div
+                                    className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 2 ? 'bg-[#59198B] text-white' : 'bg-gray-300'
+                                        }`}
+                                >
+                                    2
+                                </div>
+                                <span className={currentStep === 2 ? 'font-bold' : 'text-gray-500'}>
+                                    Job Information
+                                </span>
                             </div>
-                            <span className={currentStep === 2 ? 'font-bold' : 'text-gray-500'}>
-                                Job Information
-                            </span>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <div
-                                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                    currentStep >= 3 ? 'bg-[#59198B] text-white' : 'bg-gray-300'
-                                }`}
-                            >
-                                3
+                            <div className="flex items-center space-x-4">
+                                <div
+                                    className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 3 ? 'bg-[#59198B] text-white' : 'bg-gray-300'
+                                        }`}
+                                >
+                                    3
+                                </div>
+                                <span className={currentStep === 3 ? 'font-bold' : 'text-gray-500'}>
+                                    Skills Selection
+                                </span>
                             </div>
-                            <span className={currentStep === 3 ? 'font-bold' : 'text-gray-500'}>
-                                Skills Selection
-                            </span>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             {/* Main Content */}
-            <div className="ml-64 flex-1 bg-white">
-                <div className="max-w-3xl mx-auto p-8">
+            <div className={`${section !== 'result' ? 'ml-64' : ''} flex-1 bg-white`}>
+                <div
+                    className={`max-w-3xl mx-auto ${section === 'result' ? 'flex justify-center items-center min-h-screen py-8' : 'p-8'
+                        }`}
+                >
                     <motion.div
                         key={section}
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -50 }}
                         transition={{ duration: 0.5 }}
+                        className={section === 'result' ? 'w-[210mm] h-[297mm] bg-white p-8' : ''}
                     >
                         {section === 'name' && (
                             <EnterName
@@ -170,33 +174,36 @@ const CreateNewLetter: React.FC<CreateNewLetterProps> = ({ onBackToHome }) => {
                             />
                         )}
                         {section === 'result' && (
-                            <div className="space-y-4">
-                                <h1 className="text-2xl font-bold text-gray-800 mb-2">Generated Cover Letter</h1>
+                            <div className="flex flex-col h-3/4 space-y-4">
+                                <h1 className="text-2xl font-bold text-gray-800 mb-2 text-center">
+                                    Generated Cover Letter
+                                </h1>
                                 <textarea
                                     readOnly
                                     value={coverLetter || ''}
-                                    className="border-2 p-4 w-full rounded-lg min-h-[200px] bg-gray-100"
+                                    className="flex-1 border-2 p-4 w-full rounded-lg bg-gray-100 resize-none"
                                 />
-                                <div className="flex space-x-4">
+                                <div className="flex justify-center space-x-6 mt-6">
                                     <button
-                                        className="px-6 py-2 bg-[#59198B] text-white rounded-lg"
-                                        onClick={handleCopyToClipboard}
+                                        className="px-8 py-3 bg-[#59198B] text-white font-bold rounded-lg hover:bg-[#4A146D] transition-colors"
+                                        onClick={handleNavigateHome}
                                     >
-                                        Copy to Clipboard
+                                        Finnish Letter
                                     </button>
                                     <button
-                                        className="px-6 py-2 bg-blue-500 text-white rounded-lg"
+                                        className="px-8 py-3 border-2 border-black text-black font-bold rounded-lg hover:bg-gray-100 transition-colors"
                                         onClick={handleDownload}
                                     >
                                         Download
                                     </button>
                                     <button
-                                        className="px-6 py-2 bg-gray-400 text-white rounded-lg"
+                                        className="px-8 py-3 bg-[#C70000] text-white font-bold rounded-lg hover:bg-[#9A0000] transition-colors"
                                         onClick={resetForm}
                                     >
                                         Return
                                     </button>
                                 </div>
+
                             </div>
                         )}
                         {loading && (
@@ -208,6 +215,7 @@ const CreateNewLetter: React.FC<CreateNewLetterProps> = ({ onBackToHome }) => {
                 </div>
             </div>
         </div>
+
     );
 };
 
