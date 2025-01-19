@@ -64,7 +64,7 @@ interface CoverLetterProps {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, ease: 'easeInOut' }}
                     >
-                        How do you want to start your cover letter?
+                        How do you want to start your cover letter? ✨
                     </motion.h1>
                     <div className="flex space-x-8">
                         <motion.div

@@ -79,7 +79,7 @@ const SwipeJob = () => {
             <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-300 flex">
                 <div className="w-7/12 flex flex-col items-center border-r border-gray-300">
                     <header className="w-full bg-gradient-to-r from-[#59198B] to-[#9B4BC6] text-white py-6 shadow-md">
-                        <h1 className="text-center text-4xl font-extrabold tracking-wide">Tinder for Jobs</h1>
+                        <h1 className="text-center text-4xl font-extrabold tracking-wide">❤️Tinder for Jobs❤️</h1>
                         <div className="flex justify-center mt-6">
                             <input
                                 type="text"
@@ -165,7 +165,7 @@ const SwipeJob = () => {
                 </div>
 
                 <div className="w-5/12 bg-white p-6 overflow-y-auto">
-                    <h2 className="text-2xl font-semibold text-blue-600 mb-6 text-center">Loved Jobs</h2>
+                    <h2 className="text-2xl font-semibold text-blue-600 mb-6 text-center">Loved Jobs 😋</h2>
                     <div className="space-y-4">
                         <AnimatePresence>
                             {lovedJobs.map((job) => (

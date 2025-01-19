@@ -107,17 +107,17 @@ const Home = () => {
 
   const sections = [
     {
-      title: "Welcome to Resume Builder",
-      description: "Start building your professional resume today",
+      title: "Welcome to Resume Builder 🙈",
+      description: "Start building your professional resume today 😍",
       action: "Get Started"
     },
     {
-      title: "Our AI will help you in building your resume",
-      description: "Type in your github link and voila!",
+      title: "Our AI will help you in building your resume 🤖",
+      description: "Type in your github link and voila! 😎",
     },
     {
-      title: "Not satisfied with the results?",
-      description: "You can customize it with your choices!",
+      title: "Not satisfied with the results? 😾",
+      description: "You can customize it with your choices! 🥰",
     },
   ];
 

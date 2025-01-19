@@ -45,11 +45,11 @@ const BuildResume = () => {
 
   // Education State
   const [education, setEducation] = useState<Education>({
-    school: "",
-    location: "",
-    degree: "",
-    gpa: "",
-    honors: ""
+    school: "Worcester Polytechnic Institute",
+    location: "Worcester, MA",
+    degree: "Bachelor",
+    gpa: "3.9",
+    honors: "Dean List"
   });
 
   // Experience State
@@ -290,13 +290,13 @@ const BuildResume = () => {
 
   const formatDate = (date: string) => {
     const [startDate, endDate] = date.split(' - ');
-    
+
     // Format the start date and end date
     const format = (d: string) => {
       const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short' };
       return new Date(d).toLocaleDateString('en-US', options);
     };
-    
+
     return `${format(startDate)} - ${format(endDate)}`;
   };
 
@@ -318,7 +318,7 @@ const BuildResume = () => {
               onClick={togglePersonal}
               className="w-full flex items-center justify-between p-3 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-md mb-3"
             >
-              <span className="font-medium text-gray-700">Personal Details</span>
+              <span className="font-medium text-gray-700">Personal Details 🤩</span>
               <span className={`transform transition-transform ${personalExpanded ? "rotate-180" : ""}`}>▼</span>
             </button>
 
@@ -369,7 +369,7 @@ const BuildResume = () => {
               onClick={toggleEducation}
               className="w-full flex items-center justify-between p-3 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-md mb-3"
             >
-              <span className="font-medium text-gray-700">Education</span>
+              <span className="font-medium text-gray-700">Education 📚</span>
               <span className={`transform transition-transform ${educationExpanded ? "rotate-180" : ""}`}>▼</span>
             </button>
 
@@ -420,7 +420,7 @@ const BuildResume = () => {
               onClick={toggleExperiences}
               className="w-full flex items-center justify-between p-3 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-md mb-3"
             >
-              <span className="font-medium text-gray-700">Experience</span>
+              <span className="font-medium text-gray-700">Experience 🧑‍💻</span>
               <span className={`transform transition-transform ${experiencesExpanded ? "rotate-180" : ""}`}>▼</span>
             </button>
 
@@ -518,7 +518,7 @@ const BuildResume = () => {
               onClick={toggleProjects}
               className="w-full flex items-center justify-between p-3 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-md mb-4 transition-all duration-300"
             >
-              <span className="font-medium text-gray-700">Projects</span>
+              <span className="font-medium text-gray-700">Projects 💻</span>
               <span
                 className={`transform transition-transform duration-300 ${projectsExpanded ? "rotate-180" : "rotate-0"
                   }`}
@@ -628,7 +628,7 @@ const BuildResume = () => {
               onClick={toggleSkills}
               className="w-full flex items-center justify-between p-3 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-md"
             >
-              <span className="font-medium text-gray-700">Skills</span>
+              <span className="font-medium text-gray-700">Skills 🧑‍🔧</span>
               <span
                 className={`transform transition-transform ${skillsExpanded ? "rotate-180" : ""
                   }`}
@@ -673,28 +673,32 @@ const BuildResume = () => {
 
         </div>
 
-        {/* Right Side - Resume Preview */}
         <div className="w-1/2 p-6 bg-gray-50 shadow-md overflow-y-auto">
           <div id="resume-preview" className="bg-white p-8 shadow rounded">
             {/* Personal Details */}
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold">{personalDetails.fullName}</h1>
-              <p className="text-sm">
-                {personalDetails.email} - {personalDetails.phone} - {personalDetails.linkedin} - {personalDetails.github}
+            <div>
+              <h1 className="text-2xl font-bold text-center">{personalDetails.fullName}</h1>
+              <p className="text-xs flex text-center space-x-4">
+                <span>{personalDetails.email}</span>
+                <span>{personalDetails.phone}</span>
+                <span>{personalDetails.linkedin}</span>
+                <span>{personalDetails.github}</span>
               </p>
             </div>
 
             {/* Education */}
-            <div className="mb-6">
-              <h2 className="text-lg font-bold mb-2">Education</h2>
+            <div>
+              <h2 className="text-lg font-bold">Education</h2>
+              <div className="w-full border-b-2 bg-black mx-auto"></div>
               <p className="font-semibold">{education.school}, {education.location}</p>
-              <p>{education.degree}</p>
-              <p>GPA: {education.gpa}, {education.honors}</p>
+              <p className="pl-8">{education.degree}</p>
+              <p className="pl-8">GPA: {education.gpa}, {education.honors}</p>
             </div>
 
             {/* Experience */}
-            <div className="mb-6">
-              <h2 className="text-lg font-bold mb-2">Experience</h2>
+            <div>
+              <h2 className="text-lg font-bold">Experience</h2>
+              <div className="w-full border-b-2 bg-black mx-auto mb-3"></div>
               {experiences.map((exp, index) => (
                 <div key={index} className="mb-4">
                   <p className="font-semibold">{exp.company}</p>
@@ -709,8 +713,9 @@ const BuildResume = () => {
             </div>
 
             {/* Projects */}
-            <div className="mb-6">
-              <h2 className="text-lg font-bold mb-2">Projects</h2>
+            <div>
+              <h2 className="text-lg font-bold">Projects</h2>
+              <div className="w-full border-b-2 bg-black mx-auto mb-3"></div>
               {projects.map((project, index) => (
                 <div key={index} className="mb-4">
                   <p className="font-semibold">{project.repoName}</p>
@@ -727,6 +732,7 @@ const BuildResume = () => {
             {/* Technical Skills */}
             <div className="mb-6">
               <h2 className="text-lg font-bold mb-2">Technical Skills</h2>
+              <div className="w-full border-b-2 bg-black mx-auto mb-3"></div>
               <ul className="list-disc pl-5">
                 {skills.length > 0 ? (
                   skills.map((skill, index) => <li key={index}>{skill}</li>)
@@ -744,6 +750,8 @@ const BuildResume = () => {
             Download PDF
           </button>
         </div>
+
+
       </div>
     </motion.div>
   );

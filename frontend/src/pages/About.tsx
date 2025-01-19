@@ -9,8 +9,8 @@ const About = () => {
   return (
     <body className="flex flex-col items-center justify-center h-screen">
       <div id='Why' className="flex flex-col items-center justify-center h-screen">
-        <span className='large_text'>Why we do this</span>
-        <span className='medium_text'>Because we uiiiaiuiiiai </span>
+        <span className='large_text'>Why we do this ⁉️</span>
+        <span className='medium_text'>Because we uiiiaiuiiiai ‼️</span>
         <div className="flex justify-center">
         <CatComponent />
       </div>
