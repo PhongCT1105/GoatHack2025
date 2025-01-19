@@ -1,26 +1,3 @@
-// Import the BacktraceClient from @backtrace/react with your favorite package manager.
-import { BacktraceClient, BacktraceConfiguration } from '@backtrace/react';
-
-// Configure client options
-const options: BacktraceConfiguration = {
-    // Name of the website/application
-    name: 'MyWebPage',
-    // Version of the website
-    version: '1.2.3',
-    // Submission url
-    // <universe> is the subdomain of your Backtrace instance (<universe>.backtrace.io)
-    // <token> can be found in Project Settings/Submission tokens
-    url: 'https://submit.backtrace.io/<universe>/<token>/json',
-};
-
-// Initialize the client with the options
-const client = BacktraceClient.initialize(options);
-
-// By default, Backtrace will send an error for Uncaught Exceptions and Unhandled Promise Rejections
-
-// Manually send an error
-client.send(new Error('Something broke!'));
-
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
