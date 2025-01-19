@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
+import { useResumeContext } from '../context/ResumeContext';
 
 interface ProjectData {
   repoName: string;
@@ -33,13 +34,13 @@ interface Experience {
 
 const BuildResume = () => {
   // Personal Details State
-  const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
-    fullName: "Phong Cao",
-    phone: "774-701-3932",
-    email: "ptcao@wpi.edu",
-    linkedin: "linkedin.com/in/phong-cao",
-    github: "github.com/PhongCT1105"
-  });
+  // const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
+  //   fullName: "Phong Cao",
+  //   phone: "774-701-3932",
+  //   email: "ptcao@wpi.edu",
+  //   linkedin: "linkedin.com/in/phong-cao",
+  //   github: "github.com/PhongCT1105"
+  // });
 
   // Education State
   const [education, setEducation] = useState<Education>({
@@ -51,7 +52,9 @@ const BuildResume = () => {
   });
 
   // Experience State
-  const [experiences, setExperiences] = useState<Experience[]>([]);
+  // const [experiences, setExperiences] = useState<Experience[]>([]);
+
+  const { personalDetails, experiences, setPersonalDetails, setExperiences } = useResumeContext();
 
   // Projects State (existing)
   const [projects, setProjects] = useState<ProjectData[]>([]);
@@ -98,13 +101,6 @@ const BuildResume = () => {
     setSkills(newSkills);
   };
 
-  // Handle personal details changes
-  const handlePersonalDetailsChange = (field: keyof PersonalDetails, value: string) => {
-    setPersonalDetails(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
 
   // Handle education changes
   const handleEducationChange = (field: keyof Education, value: string) => {
@@ -114,16 +110,27 @@ const BuildResume = () => {
     }));
   };
 
-  // Handle experience changes
-  const handleAddExperience = () => {
-    setExperiences(prev => [...prev, {
-      company: "",
-      role: "",
-      duration: "",
-      descriptions: [""]
-    }]);
+  const handlePersonalDetailsChange = (field: keyof PersonalDetails, value: string) => {
+    // Directly update the state, without returning a function
+    setPersonalDetails({
+      ...personalDetails,
+      [field]: value, // Spread current personalDetails and update the specific field
+    });
   };
-
+  
+  // handle adding a new experience
+  const handleAddExperience = () => {
+    // Directly update the experiences array without returning a function
+    setExperiences([
+      ...experiences,
+      {
+        company: '',
+        role: '',
+        duration: '',
+        descriptions: [''],
+      },
+    ]);
+  };
   // Other functions
   // Handle description change
   // const handleDescriptionChange = (projectIndex: number, newDescription: string) => {
