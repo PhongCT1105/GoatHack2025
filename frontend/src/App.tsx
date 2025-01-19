@@ -6,6 +6,8 @@ import About from './pages/About';
 import BuildResume from './pages/BuildResume';
 import CoverLetter from './pages/CoverLetter'
 import { ResumeProvider } from './context/ResumeContext';
+import SwipeJob from './pages/SwipeJob';
+
 
 function App() {
   // Add state to control navbar visibility at the app level
@@ -47,6 +49,14 @@ function App() {
             </li>
             <li>
               <Link
+                to="/swipe-job"
+                className="font-bold hover:text-gray-400 transition-colors duration-200"
+              >
+                Swipe Job
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/about"
                 className="font-bold hover:text-gray-400 transition-colors duration-200"
               >
@@ -61,6 +71,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/build-resume" element={<BuildResume />} />
             <Route path="/about" element={<About />} />
+            <Route path="/swipe-job" element={<SwipeJob />} />
             <Route path="/cover-letter" element={<CoverLetter setNavbarVisible={setIsNavbarVisible}/>} />
           </Routes>
         </ResumeProvider>

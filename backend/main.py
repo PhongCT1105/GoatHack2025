@@ -1,11 +1,24 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+import os
+from pinecone import Pinecone
+from dotenv import load_dotenv
 import json
 import logging
 from Fetch import aggregate_repo_data  # Import aggregate_repo_data from Fetch.py
 from model import generate_star_resume_section  # Import generate_star_resume_section from Model.py
 from cvmodel import generate_cover_letter  # Import the AI function from cvmodel.py
+from querydb import search_pinecone
+
+# Load environment variables
+load_dotenv()
+PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
+
+# Initialize Pinecone
+pc = Pinecone(api_key=PINECONE_API_KEY)
+index_name = "vecdb"
+index = pc.Index(index_name)
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -107,7 +120,19 @@ async def generate_cover_letter_endpoint(request: CoverLetterRequest):
         logging.error(f"Error processing cover letter request: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
+class QueryRequest(BaseModel):
+    query: str
 
+@app.post("/api/search")
+async def search_jobs(request: QueryRequest):
+    """
+    Endpoint to handle job search queries.
+    """
+    try:
+        results = search_pinecone(query=request.query, namespace="ns1", top_k=10)
+        return {"similarJobs": results}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # Test that the API is working

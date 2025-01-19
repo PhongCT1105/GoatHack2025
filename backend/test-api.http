@@ -1,10 +1,6 @@
-POST http://localhost:8000/api/generate-cover-letter
+POST http://localhost:8000/api/search
 Content-Type: application/json
 
 {
-    "fullName": "Phong Cao",
-    "jobTitle": "Machine Learning",
-    "companyName": "FPT",
-    "jobDescription": "Company X is looking for a machine learning engineer to build efficient, data-driven artificial intelligence systems that advance our predictive automation capabilities. The candidate should be highly skilled in statistics and programming, with the ability to confidently assess, analyze, and organize large amounts of data. The candidate should also be able to execute tests and optimize [Company X]’s machine learning models and algorithms.",
-    "skills": ["Collaboration", "Leadership", "Communication", "Problem Solving"]
+    "query": "Tell me about the tech company known as Apple."
 }
