@@ -5,6 +5,7 @@ import json
 import logging
 from Fetch import aggregate_repo_data  # Import aggregate_repo_data from Fetch.py
 from model import generate_star_resume_section  # Import generate_star_resume_section from Model.py
+from cvmodel import generate_cover_letter  # Import the AI function from cvmodel.py
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -66,6 +67,39 @@ async def get_github_project(repo_data: GitHubRepo):
         print(f"Exception occurred: {str(e)}")
         logging.error(f"Error processing request: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
+
+class CoverLetterRequest(BaseModel):
+    fullName: str
+    jobTitle: str
+    companyName: str
+    jobDescription: str
+    skills: list
+    
+@app.post("/api/generate-cover-letter")
+async def generate_cover_letter_endpoint(request: CoverLetterRequest):
+    try:
+        logging.info(f"Received cover letter request for: {request.name}")
+
+        # Generate cover letter
+        cover_letter = generate_cover_letter(
+            request.fullName,
+            request.jobTitle,
+            request.companyName,
+            request.jobDescription,
+            request.skills
+        )
+
+        if not cover_letter:
+            logging.error("Failed to generate cover letter.")
+            raise HTTPException(status_code=500, detail="Failed to generate cover letter")
+
+        logging.info("Cover letter generated successfully.")
+        return {"coverLetter": cover_letter}
+
+    except Exception as e:
+        logging.error(f"Error processing cover letter request: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
 
 
 # Test that the API is working
