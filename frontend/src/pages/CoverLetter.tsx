@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import CreateNewLetter from './CreateNewLetter';
 import UploadFromResume from './UploadFromResume';
+import { useResumeContext } from '../context/ResumeContext';
 
 interface CoverLetterProps {
     setNavbarVisible: (visible: boolean) => void;
@@ -9,6 +10,7 @@ interface CoverLetterProps {
   
   type OptionType = 'new' | 'resume' | null;
   const CoverLetter: React.FC<CoverLetterProps> = ({ setNavbarVisible }) => {
+    const { personalDetails, experiences } = useResumeContext();
     const [selectedOption, setSelectedOption] = useState<'new' | 'resume' | null>(null);
   
     useEffect(() => {
@@ -101,7 +103,7 @@ interface CoverLetterProps {
             ) : selectedOption === 'new' ? (
                 <CreateNewLetter onBackToHome={handleBackToHome} />
             ) : selectedOption === 'resume' ? (
-                <UploadFromResume />
+                <UploadFromResume onBackToHome={handleBackToHome} personalDetails={personalDetails} experiences={experiences}/>
             ) : null}
         </div>
     );

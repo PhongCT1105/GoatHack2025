@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import BuildResume from './pages/BuildResume';
 import CoverLetter from './pages/CoverLetter'
+import { ResumeProvider } from './context/ResumeContext';
 
 function App() {
   // Add state to control navbar visibility at the app level
@@ -55,15 +56,14 @@ function App() {
           </ul>
         </nav>
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/build-resume" element={<BuildResume />} />
-          <Route path="/about" element={<About />} />
-          <Route 
-            path="/cover-letter" 
-            element={<CoverLetter setNavbarVisible={setIsNavbarVisible} />}
-          />
-        </Routes>
+        <ResumeProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/build-resume" element={<BuildResume />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/cover-letter" element={<CoverLetter setNavbarVisible={setIsNavbarVisible}/>} />
+          </Routes>
+        </ResumeProvider>
       </div>
     </Router>
   );
