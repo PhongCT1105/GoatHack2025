@@ -7,3 +7,6 @@ html, body {
     padding: 0;
     overflow-x: hidden;
 }
+.nav-hidden {
+    display: none !important;
+  }

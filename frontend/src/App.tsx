@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import BuildResume from './pages/BuildResume';
+import CoverLetter from './pages/CoverLetter'
 
 function App() {
 
@@ -36,6 +37,14 @@ function App() {
             </li>
             <li>
               <Link
+                to="/cover-letter"
+                className="font-bold hover:text-gray-400 transition-colors duration-200"
+              >
+                Cover Letter
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/about"
                 className="font-bold hover:text-gray-400 transition-colors duration-200"
               >
@@ -50,6 +59,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/build-resume" element={<BuildResume />} />
           <Route path="/about" element={<About />} />
+          <Route path="/cover-letter" element={<CoverLetter />}/>
         </Routes>
       </div>
     </Router>
