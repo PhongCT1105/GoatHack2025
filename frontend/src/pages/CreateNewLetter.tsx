@@ -214,6 +214,54 @@ const WorkingSkills: React.FC<WorkingSkillsProps> = ({
     );
 }
 
+const handleSubmit = async ({
+    firstName,
+    lastName,
+    jobTitle,
+    companyName,
+    jobDescription,
+    selectedSkills,
+}: {
+    firstName: string;
+    lastName: string;
+    jobTitle: string;
+    companyName: string;
+    jobDescription: string;
+    selectedSkills: string[];
+}) => {
+    try {
+        const payload = {
+            fullName: `${firstName} ${lastName}`,
+            jobTitle,
+            companyName,
+            jobDescription,
+            skills: selectedSkills,
+        };
+
+        console.log("Payload", payload )
+
+        const response = await fetch('http://localhost:5173/api/generate-cover-letter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Data saved successfully:', result);
+            // Handle success (e.g., show a success message or navigate to the next screen)
+        } else {
+            console.error('Failed to save data:', response.statusText);
+            // Handle error (e.g., show an error message)
+        }
+    } catch (error) {
+        console.error('An error occurred while saving data:', error);
+        // Handle network errors
+    }
+};
+
 type CreateNewLetterProps = {
     onBackToHome: () => void;
 };
@@ -331,7 +379,21 @@ function CreateNewLetter({ onBackToHome }: CreateNewLetterProps) {
                                 selectedSkills={selectedSkills}
                                 setSelectedSkills={setSelectedSkills}
                                 onBack={handleSkillsBack}
-                                onContinue={handleSkillsContinue}
+                                onContinue={async () => {
+                                    if (selectedSkills.length > 0) {
+                                        // Call handleSubmit when "Continue" is pressed
+                                        await handleSubmit({
+                                            firstName,
+                                            lastName,
+                                            jobTitle,
+                                            companyName,
+                                            jobDescription,
+                                            selectedSkills,
+                                        });
+                                    } else {
+                                        console.error("No skills selected. Cannot proceed.");
+                                    }
+                                }}
                             />
                         )}
                     </motion.div>

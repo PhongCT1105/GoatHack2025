@@ -88,6 +88,7 @@ async def generate_cover_letter_endpoint(request: CoverLetterRequest):
             request.jobDescription,
             request.skills
         )
+        print(cover_letter)
 
         if not cover_letter:
             logging.error("Failed to generate cover letter.")
