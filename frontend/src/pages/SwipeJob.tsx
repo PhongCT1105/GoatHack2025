@@ -1,110 +1,190 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+
+interface Job {
+    id: number;
+    job_title: string;
+    company_name: string;
+    country_code: string;
+    description: string;
+}
 
 const SwipeJob = () => {
-    const [query, setQuery] = useState('');
-    const [results, setResults] = useState([]);
-    const [lovedJobs, setLovedJobs] = useState([]);
+    const [query, setQuery] = useState<string>('');
+    const [results, setResults] = useState<Job[]>([]);
+    const [lovedJobs, setLovedJobs] = useState<Job[]>([]);
+    const [error, setError] = useState<string>('');
+    const [exitDirection, setExitDirection] = useState<'left' | 'right' | null>(null);
 
-    // Handle query input change
-    const handleInputChange = (e) => {
+    // Define swipe threshold
+    const SWIPE_THRESHOLD = 100;
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value);
     };
 
-    // Handle search submission
     const handleSearch = async () => {
         if (!query.trim()) return;
 
         try {
-            const response = await axios.post('http://localhost:8000/api/search', { query }); // Replace with your backend API endpoint
-            setResults(response.data.similarJobs || []);
+            const response = await axios.post('http://localhost:8000/api/search', { query });
+            if (response.data?.similarJobs) {
+                setResults(response.data.similarJobs);
+            } else {
+                setResults([]);
+            }
+            setError('');
         } catch (error) {
             console.error('Error fetching results:', error);
+            setError('Failed to fetch jobs. Please try again.');
         }
     };
 
-    // Handle swipe right to "Love" a job
-    const handleSwipeRight = (job) => {
+    const handleSwipeRight = (job: Job) => {
+        setExitDirection('right');
         setLovedJobs([...lovedJobs, job]);
-        setResults(results.slice(1)); // Remove the first job to show the next one
+        setTimeout(() => {
+            setResults(results.slice(1));
+            setExitDirection(null);
+        }, 200);
+    };
+
+    const handleSwipeLeft = () => {
+        setExitDirection('left');
+        setTimeout(() => {
+            setResults(results.slice(1));
+            setExitDirection(null);
+        }, 200);
+    };
+
+    const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+        const swipe = info.offset.x;
+        if (Math.abs(swipe) > SWIPE_THRESHOLD) {
+            if (swipe > 0) {
+                handleSwipeRight(results[0]);
+            } else {
+                handleSwipeLeft();
+            }
+        }
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-300 flex">
-            {/* Tinder Section */}
-            <div className="w-7/12 flex flex-col items-center border-r border-gray-300">
-                <header className="w-full bg-gradient-to-r from-blue-600 to-green-500 text-white py-6 shadow-md">
-                    <h1 className="text-center text-4xl font-extrabold tracking-wide">Tinder for Jobs</h1>
-                    <div className="flex justify-center mt-6">
-                        <input
-                            type="text"
-                            value={query}
-                            onChange={handleInputChange}
-                            placeholder="Enter your query"
-                            className="px-4 py-3 w-2/3 max-w-lg border-2 border-white rounded-l-full focus:outline-none focus:ring-2 focus:ring-white"
-                        />
-                        <button
-                            onClick={handleSearch}
-                            className="bg-white text-blue-600 px-6 py-3 rounded-r-full font-bold hover:bg-blue-100 transition-all"
-                        >
-                            Search
-                        </button>
-                    </div>
-                </header>
+        <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.5 }}
+        >
+            <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-300 flex">
+                <div className="w-7/12 flex flex-col items-center border-r border-gray-300">
+                    <header className="w-full bg-gradient-to-r from-[#59198B] to-[#9B4BC6] text-white py-6 shadow-md">
+                        <h1 className="text-center text-4xl font-extrabold tracking-wide">Tinder for Jobs</h1>
+                        <div className="flex justify-center mt-6">
+                            <input
+                                type="text"
+                                value={query}
+                                onChange={handleInputChange}
+                                placeholder="Enter your query"
+                                className="px-4 py-3 w-2/3 max-w-lg border-white text-black rounded-l-full"
+                            />
+                            <button
+                                onClick={handleSearch}
+                                className="bg-white text-blue-600 px-6 py-3 rounded-r-full font-bold hover:bg-blue-100 transition-all"
+                            >
+                                Search
+                            </button>
+                        </div>
+                    </header>
 
-                <main className="flex-grow w-full max-w-2xl mt-10 flex flex-col items-center">
-                    <div className="relative w-full h-96 flex justify-center items-center">
+                    <main className="flex-grow w-full max-w-2xl mt-10 flex flex-col items-center">
+                        <div className="relative w-full h-96 flex justify-center items-center">
+                            <AnimatePresence mode="wait">
+                                {error && <p className="text-lg text-red-500">{error}</p>}
+                                {results.length > 0 && (
+                                    <motion.div
+                                        key={results[0].id}
+                                        className="absolute w-80 h-96 bg-white shadow-xl rounded-3xl p-6 flex flex-col cursor-grab active:cursor-grabbing"
+                                        initial={{ scale: 0.8 }}
+                                        animate={{ scale: 1, x: 0 }}
+                                        exit={exitDirection === 'left'
+                                            ? { x: -300, opacity: 0, transition: { duration: 0.2 } }
+                                            : exitDirection === 'right'
+                                                ? { x: 300, opacity: 0, transition: { duration: 0.2 } }
+                                                : { opacity: 0 }
+                                        }
+                                        drag="x"
+                                        dragConstraints={{ left: 0, right: 0 }}
+                                        onDragEnd={handleDragEnd}
+                                        whileDrag={{ scale: 1.05 }}
+                                    >
+                                        <div className="flex flex-col h-full">
+                                            {/* Title section - 1/4 of the space */}
+                                            <div className="h-1/4 mb-4">
+                                                <h3 className="text-xl font-bold text-blue-600 line-clamp-2 overflow-hidden">
+                                                    {results[0].job_title}
+                                                </h3>
+                                            </div>
+
+                                            {/* Company and country info - remaining space */}
+                                            <div className="flex-1 overflow-hidden">
+                                                <div className="space-y-2">
+                                                    <p className="text-lg font-bold text-gray-700 line-clamp-2">
+                                                        Company: {results[0].company_name}
+                                                    </p>
+                                                    <p className="text-sm text-gray-700">
+                                                        Country: {results[0].country_code}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            {/* Buttons section */}
+                                            <div className="flex justify-between mt-auto pt-4">
+                                                <button
+                                                    onClick={() => handleSwipeLeft()}
+                                                    className="px-6 py-2 bg-red-500 text-white rounded-full font-bold hover:bg-red-600 transition-all"
+                                                >
+                                                    Dislike
+                                                </button>
+                                                <button
+                                                    onClick={() => handleSwipeRight(results[0])}
+                                                    className="px-6 py-2 bg-green-500 text-white rounded-full font-bold hover:bg-green-600 transition-all"
+                                                >
+                                                    Love
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+                                {results.length === 0 && (
+                                    <p className="text-lg text-gray-500">No jobs available. Try a new search!</p>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </main>
+                </div>
+
+                <div className="w-5/12 bg-white p-6 overflow-y-auto">
+                    <h2 className="text-2xl font-semibold text-blue-600 mb-6 text-center">Loved Jobs</h2>
+                    <div className="space-y-4">
                         <AnimatePresence>
-                            {results.length > 0 ? (
+                            {lovedJobs.map((job) => (
                                 <motion.div
-                                    key={results[0].id}
-                                    className="absolute w-80 h-96 bg-white shadow-xl rounded-3xl p-6 flex flex-col justify-between"
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, x: 200 }}
-                                    transition={{ duration: 0.5 }}
+                                    key={job.id}
+                                    initial={{ opacity: 0, x: 300 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -300 }}
+                                    className="bg-gray-100 shadow-md p-4 rounded-xl text-gray-800 flex flex-col items-start"
                                 >
-                                    <div>
-                                        <h3 className="text-xl font-bold text-blue-600 mb-2">{results[0].job_title}</h3>
-                                        <p className="text-sm text-gray-700 mb-1">Company: {results[0].company_name}</p>
-                                        <p className="text-sm text-gray-700 mb-1">Base Salary: {results[0].base_salary}</p>
-                                        <p className="text-sm text-gray-700 mb-1">Country: {results[0].country_code}</p>
-                                        <p className="text-sm text-gray-700 mb-4">Description: {results[0].description}</p>
-                                    </div>
-                                    <div className="flex justify-around">
-                                        <button
-                                            onClick={() => handleSwipeRight(results[0])}
-                                            className="px-6 py-2 bg-green-500 text-white rounded-full font-bold hover:bg-green-600 transition-all"
-                                        >
-                                            Love
-                                        </button>
-                                    </div>
+                                    <h3 className="text-lg font-bold">{job.job_title}</h3>
+                                    <p className="text-sm">Company: {job.company_name}</p>
                                 </motion.div>
-                            ) : (
-                                <p className="text-lg text-gray-500">No more jobs available. Try a new search!</p>
-                            )}
+                            ))}
                         </AnimatePresence>
                     </div>
-                </main>
-            </div>
-
-            {/* Loved Projects Section */}
-            <div className="w-5/12 bg-white p-6 overflow-y-auto">
-                <h2 className="text-2xl font-semibold text-blue-600 mb-6 text-center">Loved Projects</h2>
-                <div className="space-y-4">
-                    {lovedJobs.map((job) => (
-                        <div
-                            key={job.id}
-                            className="bg-gray-100 shadow-md p-4 rounded-xl text-gray-800 flex flex-col items-start"
-                        >
-                            <h3 className="text-lg font-bold">{job.job_title}</h3>
-                            <p className="text-sm">Company: {job.company_name}</p>
-                        </div>
-                    ))}
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

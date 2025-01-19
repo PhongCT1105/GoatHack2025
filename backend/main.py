@@ -87,13 +87,6 @@ class CoverLetterRequest(BaseModel):
     companyName: str
     jobDescription: str
     skills: list
-    
-class CoverLetterRequest(BaseModel):
-    fullName: str
-    jobTitle: str
-    companyName: str
-    jobDescription: str
-    skills: list
 
 @app.post("/api/generate-cover-letter")
 async def generate_cover_letter_endpoint(request: CoverLetterRequest):
