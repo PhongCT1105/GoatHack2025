@@ -26,9 +26,9 @@ const SwipeJob = () => {
 
     const handleSearch = async () => {
         if (!query.trim()) return;
-
+    
         try {
-            const response = await axios.post('http://localhost:8000/api/search', { query });
+            const response = await axios.post('https://r2r-9xyk.onrender.com/api/search', { query });
             if (response.data?.similarJobs) {
                 setResults(response.data.similarJobs);
             } else {
@@ -40,6 +40,7 @@ const SwipeJob = () => {
             setError('Failed to fetch jobs. Please try again.');
         }
     };
+    
 
     const handleSwipeRight = (job: Job) => {
         setExitDirection('right');

@@ -26,12 +26,12 @@ interface Education {
   honors: string;
 }
 
-interface Experience {
-  company: string;
-  role: string;
-  duration: string;
-  descriptions: string[];
-}
+// interface Experience {
+//   company: string;
+//   role: string;
+//   duration: string;
+//   descriptions: string[];
+// }
 
 const BuildResume = () => {
   // Personal Details State
@@ -210,7 +210,7 @@ const BuildResume = () => {
 
       console.log(`Sending data to backend: Owner: ${owner}, Repo: ${repo}`);
 
-      const response = await axios.post("http://localhost:8000/api/github-project", {
+      const response = await axios.post("https://r2r-9xyk.onrender.com/api/github-project", {
         owner,
         repo,
       });
