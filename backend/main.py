@@ -75,10 +75,17 @@ class CoverLetterRequest(BaseModel):
     jobDescription: str
     skills: list
     
+class CoverLetterRequest(BaseModel):
+    fullName: str
+    jobTitle: str
+    companyName: str
+    jobDescription: str
+    skills: list
+
 @app.post("/api/generate-cover-letter")
 async def generate_cover_letter_endpoint(request: CoverLetterRequest):
     try:
-        logging.info(f"Received cover letter request for: {request.name}")
+        logging.info(f"Received cover letter request for: {request.fullName}")
 
         # Generate cover letter
         cover_letter = generate_cover_letter(
@@ -88,7 +95,6 @@ async def generate_cover_letter_endpoint(request: CoverLetterRequest):
             request.jobDescription,
             request.skills
         )
-        print(cover_letter)
 
         if not cover_letter:
             logging.error("Failed to generate cover letter.")
@@ -100,6 +106,7 @@ async def generate_cover_letter_endpoint(request: CoverLetterRequest):
     except Exception as e:
         logging.error(f"Error processing cover letter request: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
+
 
 
 
