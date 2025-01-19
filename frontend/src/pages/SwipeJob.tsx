@@ -59,7 +59,7 @@ const SwipeJob = () => {
         }, 200);
     };
 
-    const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
         const swipe = info.offset.x;
         if (Math.abs(swipe) > SWIPE_THRESHOLD) {
             if (swipe > 0) {
@@ -69,6 +69,7 @@ const SwipeJob = () => {
             }
         }
     };
+    
 
     return (
         <motion.div
