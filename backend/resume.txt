@@ -1,0 +1,37 @@
+SKILLS
+•	Programming Languages: Python, C, C++, TypeScript, JavaScript, Java, SQL.
+•	AI/ML Frameworks and Tools: Scikit-learn, PyTorch, TensorFlow, LangChain, OpenAI, Jupyter Notebook, Hugging face
+•	Cloud Platforms and Databases: Azure, AWS, Firebase, Lance DB, PostgreSQL, MongoDB.
+•	Web Development: React.js, Next.js, Express, Nodejs, Tailwind CSS, Prisma ORM.
+•	DevOps and Productivity: Docker, Linux, GitHub, Azure DevOps, Version Control, Jira.
+•	Certifications: Microsoft Certified Azure AI Engineer Associate.
+
+WORK EXPERIENCE
+Machine Learning Intern (MLOps) – FPT Software, Vietnam	Jun 2024 – Aug 2024
+•	Deployed an AI-powered solution to optimize wedding album image storage, retrieval, and organization. 
+•	Implemented an Image Clustering Deep Learning system applying cloud computing: Azure AI vision for CNN-based image analysis, Cosmos DB for vector database storage, and Blob Storage for original image storage.
+•	Collected and designed a processing pipeline for 5000 images, fine-tuned model, and evaluated performance.
+•	Collaborated with cross-functional teams to secure PoC approval, projected a potential $27,000 in revenue.
+Data Science Intern – FPT Software, Vietnam		Jul 2023 – Aug 2023
+•	Launched a specialized ground truth database for human pose detection, featuring 10 unique poses tracked in diverse environments leveraging Python frameworks such as OpenCV, Pandas, NumPy, and Matplotlib.
+•	Proposed and executed a data collection strategy that resulted in the acquisition of 10,000 labeled images.
+•	Improved model accuracy by 15% in the initial training phases, achieving approximately 88% overall accuracy.
+Artificial Intelligence Summer Intern – Vietnam National University, Vietnam	Jun 2022 – Aug 2022
+•	Constructed a CNN model for vehicle detection, classification, and speed estimation.
+•	Engineered a dataset of 3000 labeled images from 50 videos, ensuring high-quality input data to train vehicle detection algorithms using YOLO.
+•	Achieved 95% accuracy, earning 2nd place at the regional Science and Technology competition.
+
+PROJECTS
+Project Lead – RAG-based Research Synthesis Tool (SyntheSearch), MA	Nov 2024 – Present
+•	Engineered an AI-powered web application, leveraging LangChain, Lance DB, and a Retrieval-Augmented Generation model, enabling the synthesis of complex research insights from over 100 documents within minutes.
+•	Developed a full-stack solution with Python backend, React frontend, and Databricks for ML pipeline management.
+•	Optimized literature review efficiency by 75% and enhanced research synthesis with advanced LLM-driven insights.
+Software Engineering Lead – Web application for Mass General Brigham Hospital, MA	Mar 2024 – May 2024
+•	Led a team of 11 members with Agile Methodology and developed a web application for hospital management.
+•	Implemented core features, including a path-finding algorithm, service request forms in PostgreSQL, graph insight visualization, and a Machine Learning scheduling system with TensorFlow for hospital staff, deployed on AWS.
+•	Administered comprehensive 85 user stories and scenarios, designed 10 UML diagrams to clarify system architecture and facilitate effective communication.
+•	Delivered fully functional hospital management integrating machine learning accuracy at 90% for task scheduling, providing real-time data insights, and a user-friendly interface with React.JS, advertised to Brigham Hospital staff.
+Project Lead – Machine learning system for Cancer Detection	Sep 2024 – Dec 2024
+•	Established a ML pipeline for cancer detection, classification, key gene clustering with 54,675 features gene data.
+•	Applied feature selection (ANOVA, Mutual Information, Variance Threshold) with overlapping techniques; trained Lasso Regression and Decision Tree models with LOOCV and K-Fold validation across 12 cancer types.
+•	Operated a bagging-based pipeline to aggregate model predictions, analyzing classification, integrated using Streamlit, achieved 90% accuracy and 0.9 recall, supporting personalized, bioinformatics cancer treatment.
