@@ -1,0 +1,11 @@
+### Test GET Request
+GET https://repo2resume-latest.onrender.com
+
+### Test POST Request
+POST https://repo2resume-latest.onrender.com/api/github-project
+Content-Type: application/json
+
+{ 
+    "owner": "PhongCT1105",
+    "repo": "SyntheSearch"
+}

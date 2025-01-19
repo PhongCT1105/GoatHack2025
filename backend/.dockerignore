@@ -1,0 +1,9 @@
+# Exclude the .env file
+.env
+
+# Exclude other unnecessary files
+__pycache__/
+*.pyc
+*.pyo
+*.log
+*.git
