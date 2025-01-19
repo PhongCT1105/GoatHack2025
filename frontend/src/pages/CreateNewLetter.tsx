@@ -3,25 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'
 
 interface EnterJobDetailsProps {
-    onBack: () => void; 
-    onContinue: () => void;  
-    jobTitle: string;  
-    setJobTitle: (value: string) => void;  
-    companyName: string;  
-    setCompanyName: (value: string) => void; 
-    jobDescription: string;  
-    setJobDescription: (value: string) => void; 
+    onBack: () => void;
+    onContinue: () => void;
+    jobTitle: string;
+    setJobTitle: (value: string) => void;
+    companyName: string;
+    setCompanyName: (value: string) => void;
+    jobDescription: string;
+    setJobDescription: (value: string) => void;
 }
 
-const EnterJobDetails: React.FC<EnterJobDetailsProps> = ({ 
-    onBack, 
-    onContinue, 
-    jobTitle, 
-    setJobTitle, 
-    companyName, 
-    setCompanyName, 
-    jobDescription, 
-    setJobDescription 
+const EnterJobDetails: React.FC<EnterJobDetailsProps> = ({
+    onBack,
+    onContinue,
+    jobTitle,
+    setJobTitle,
+    companyName,
+    setCompanyName,
+    jobDescription,
+    setJobDescription
 }) => {
     return (
         <div className="w-full max-w-3xl mx-auto">
@@ -185,8 +185,8 @@ const WorkingSkills: React.FC<WorkingSkillsProps> = ({
                         key={skill}
                         onClick={() => toggleSkill(skill)}
                         className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-all duration-300 ${selectedSkills.includes(skill)
-                                ? 'border-black bg-[#59198B] text-white'
-                                : 'border-gray-200 hover:border-gray-400'
+                            ? 'border-black bg-[#59198B] text-white'
+                            : 'border-gray-200 hover:border-gray-400'
                             }`}
                     >
                         <span>{skill}</span>
@@ -301,10 +301,10 @@ function CreateNewLetter({ onBackToHome }: CreateNewLetterProps) {
                 <div className="max-w-3xl mx-auto p-8">
                     {/* Motion div for section transition */}
                     <motion.div
-                        key={section}  
-                        initial={{ opacity: 0, x: 50 }}  
-                        animate={{ opacity: 1, x: 0 }}  
-                        exit={{ opacity: 0, x: -50 }}  
+                        key={section}
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -50 }}
                         transition={{ duration: 0.5 }}
                     >
                         {section === 'name' ? (
