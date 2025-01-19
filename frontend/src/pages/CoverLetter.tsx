@@ -2,34 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import CreateNewLetter from './CreateNewLetter';
 import UploadFromResume from './UploadFromResume';
-import { useNavigate } from 'react-router-dom';
 
-function CoverLetter() {
-    const [selectedOption, setSelectedOption] = useState(null);
-    const navigate = useNavigate();
+interface CoverLetterProps {
+    setNavbarVisible: (visible: boolean) => void;
+  }
+  
+  type OptionType = 'new' | 'resume' | null;
+  const CoverLetter: React.FC<CoverLetterProps> = ({ setNavbarVisible }) => {
+    const [selectedOption, setSelectedOption] = useState<'new' | 'resume' | null>(null);
+  
+    useEffect(() => {
+      // Update navbar visibility based on selectedOption
+      setNavbarVisible(!selectedOption);
+  
+      // Cleanup - show navbar when component unmounts
+      return () => {
+        setNavbarVisible(true);
+      };
+    }, [selectedOption, setNavbarVisible]);
+  
 
-    const handleSelect = (option) => {
+    const handleSelect = (option: OptionType) => {
         setSelectedOption(option);
         // Add navigation logic based on the selected option
         if (option === 'new') {
-            console.log('Navigating to Create a New Letter');
+          console.log('Navigating to Create a New Letter');
         } else if (option === 'resume') {
-            console.log('Navigating to Use Your Resume');
+          console.log('Navigating to Use Your Resume');
         }
-    };
-    useEffect(() => {
-        const navbar = document.querySelector('nav'); // Adjust selector based on your navbar
-        if (selectedOption) {
-            navbar.style.display = 'none';
-        } else {
-            navbar.style.display = 'flex';
-        }
-
-        // Cleanup - show navbar when component unmounts
+      };
+    
+      useEffect(() => {
+        setNavbarVisible(!selectedOption);
         return () => {
-            navbar.style.display = 'flex';
+          setNavbarVisible(true);
         };
-    }, [selectedOption]);
+      }, [selectedOption, setNavbarVisible]);
 
     const handleBackToHome = () => {
         setSelectedOption(null);
