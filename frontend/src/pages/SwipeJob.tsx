@@ -28,7 +28,7 @@ const SwipeJob = () => {
         if (!query.trim()) return;
     
         try {
-            const response = await axios.post('https://r2r-9xyk.onrender.com/api/search', { query });
+            const response = await axios.post('https://r2r-latest-1.onrender.com/api/search', { query });
             if (response.data?.similarJobs) {
                 setResults(response.data.similarJobs);
             } else {

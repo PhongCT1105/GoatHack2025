@@ -1,6 +1,7 @@
-POST http://localhost:8000/api/search
+POST https://r2r-latest.onrender.com/api/github-project
 Content-Type: application/json
 
 {
-    "query": "Tell me about the tech company known as Apple."
+    "owner": "PhongCT1105",
+    "repo": "SyntheSearch",
 }

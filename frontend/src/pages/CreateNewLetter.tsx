@@ -36,7 +36,7 @@ const CreateNewLetter: React.FC<CreateNewLetterProps> = ({ onBackToHome }) => {
 
         setLoading(true); // Show loading animation
         try {
-            const response = await axios.post('https://r2r-9xyk.onrender.com/api/generate-cover-letter', payload, {
+            const response = await axios.post('https://r2r-latest-1.onrender.com/api/generate-cover-letter', payload, {
                 headers: { 'Content-Type': 'application/json' },
             });
 
