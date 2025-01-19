@@ -681,10 +681,19 @@ const BuildResume = () => {
               <p className="text-xs flex text-center space-x-4">
                 <span>{personalDetails.email}</span>
                 <span>{personalDetails.phone}</span>
-                <span>{personalDetails.linkedin}</span>
-                <span>{personalDetails.github}</span>
+                <span>
+                  <a href={`https://www.linkedin.com/in/${personalDetails.linkedin}`} target="_blank" rel="noopener noreferrer">
+                    {personalDetails.linkedin}
+                  </a>
+                </span>
+                <span>
+                  <a href={`https://github.com/${personalDetails.github}`} target="_blank" rel="noopener noreferrer">
+                    {personalDetails.github}
+                  </a>
+                </span>
               </p>
             </div>
+
 
             {/* Education */}
             <div>
