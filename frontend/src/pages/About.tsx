@@ -22,7 +22,7 @@ const About = () => {
         </div>
         <div className='Person'>
           <img className='imageIcon' src={hien} alt="Hien Hoang" />
-          <div>eric Hien</div>
+          <div>Hien Hoang</div>
         </div>
         <div className='Person'>
           <img className='imageIcon' src={phong} alt="Cao Thanh Phong" />
