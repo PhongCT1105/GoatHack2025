@@ -1,4 +1,3 @@
-import React from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import GoatHack from "../assets/GoatHack.png";
@@ -40,7 +39,10 @@ const Home = () => {
   
 
   // Custom Arrow Component
-  const CustomArrow = ({ onClick, direction }) => {
+  const CustomArrow: React.FC<{ onClick: () => void; direction: string }> = ({
+    onClick,
+    direction,
+  }) => {
     const isLeft = direction === "left";
     return (
       <button
@@ -84,6 +86,7 @@ const Home = () => {
       </button>
     );
   };
+  
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-purple-100 to-indigo-200">
