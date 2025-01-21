@@ -47,8 +47,8 @@ const BuildResume = () => {
   const [education, setEducation] = useState<Education>({
     school: "Worcester Polytechnic Institute",
     location: "Worcester, MA",
-    degree: "Bachelor",
-    gpa: "3.9",
+    degree: "M.S. in AI B.S. in CS",
+    gpa: "3.95",
     honors: "Dean List"
   });
 
@@ -686,11 +686,12 @@ const BuildResume = () => {
                     {personalDetails.linkedin}
                   </a>
                 </span>
-                <span>
-                  <a href={`https://github.com/${personalDetails.github}`} target="_blank" rel="noopener noreferrer">
+              <span>
+                  <a href={`/${personalDetails.github}`} target="_blank" rel="noopener noreferrer">
                     {personalDetails.github}
                   </a>
-                </span>
+              </span>
+
               </p>
             </div>
 

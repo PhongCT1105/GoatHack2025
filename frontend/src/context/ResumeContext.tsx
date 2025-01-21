@@ -28,10 +28,10 @@ const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
 const ResumeProvider = ({ children }: { children: ReactNode }) => {
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
     fullName: 'Phong Cao',
-    phone: '774123123',
-    email: 'phong@gmail.com',
-    linkedin: 'https://linkedin.com/phong',
-    github: 'https://github.com/PhongCT1105',
+    phone: '7747013932',
+    email: 'ptcao@wpi.edu',
+    linkedin: 'linkedin.com/in/phong-cao/',
+    github: 'github.com/PhongCT1105',
   });
 
   const [experiences, setExperiences] = useState<Experience[]>([]);
