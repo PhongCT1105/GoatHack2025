@@ -48,8 +48,7 @@ const About = () => {
       </section>
 
       {/* Tech Stack Section */}
- {/* Tech Stack Section */}
- <section id="TechStack" className="w-full py-8 bg-gray-50">
+      <section id="TechStack" className="w-full py-8 bg-gray-50">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Our Tech Stack</h1>
         <div className="max-w-4xl mx-auto">
           <div className="overflow-hidden rounded-lg border border-gray-300">
@@ -72,7 +71,7 @@ const About = () => {
                     <img src={pinecone} alt="Pinecone" className="w-6 h-6" />
                     <span>Pinecone</span>
                   </td>
-                  <td className="py-3 px-6">Semantic search for job matching</td>
+                  <td className="py-3 px-6">AI-driven resume builder using semantic search and NLP</td>
                 </tr>
                 <tr>
                   <td className="py-3 px-6">Frontend</td>
@@ -82,7 +81,7 @@ const About = () => {
                     <SiTailwindcss className="text-blue-400 text-xl" />
                     <span>Tailwind CSS</span>
                   </td>
-                  <td className="py-3 px-6">Dynamic user interfaces</td>
+                  <td className="py-3 px-6">Interactive, responsive UI for creating resumes</td>
                 </tr>
                 <tr>
                   <td className="py-3 px-6">Backend</td>
@@ -92,7 +91,7 @@ const About = () => {
                     <FaPython className="text-blue-500 text-xl" />
                     <span>Python</span>
                   </td>
-                  <td className="py-3 px-6">API for backend development</td>
+                  <td className="py-3 px-6">RESTful APIs for processing GitHub data into resume entries</td>
                 </tr>
                 <tr>
                   <td className="py-3 px-6">Deploy</td>
@@ -108,7 +107,7 @@ const About = () => {
                     <SiRender className="text-indigo-500 text-xl" />
                     <span>Render</span>
                   </td>
-                  <td className="py-3 px-6">Tools for scalable deployment</td>
+                  <td className="py-3 px-6">Scalable deployment for seamless integration and performance</td>
                 </tr>
               </tbody>
             </table>
