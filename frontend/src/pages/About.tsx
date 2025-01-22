@@ -36,7 +36,7 @@ const About = () => {
             <div className="Person text-center">
               <img className="imageIcon rounded-full w-28 h-28 mx-auto" src={hien} alt="Hien Hoang" />
               <div className="mt-3 text-base font-semibold">Hien Hoang</div>
-              <div className="text-sm text-gray-600">Front End</div>
+              <div className="text-sm text-gray-600">Front End + Back End</div>
             </div>
             <div className="Person text-center">
               <img className="imageIcon rounded-full w-28 h-28 mx-auto" src={huy} alt="Pham Gia Huy" />
