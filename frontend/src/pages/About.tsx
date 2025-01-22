@@ -12,6 +12,7 @@ import { SiTerraform } from "react-icons/si";
 import { CgVercel } from "react-icons/cg";
 import { SiRender } from "react-icons/si";
 import pinecone from '../assets/Pinecone.png';
+import CatComponent from "../components/CatComponent";
 
 const About = () => {
   return (
@@ -33,8 +34,15 @@ const About = () => {
               <div className="mt-3 text-base font-semibold">Le Dang Doanh Phung</div>
               <div className="text-sm text-gray-600">Front End</div>
             </div>
-            <div className="Person text-center">
+            {/* <div className="Person text-center">
               <img className="imageIcon rounded-full w-28 h-28 mx-auto" src={hien} alt="Hien Hoang" />
+              <div className="mt-3 text-base font-semibold">Hien Hoang</div>
+              <div className="text-sm text-gray-600">Front End + Back End</div>
+            </div> */}
+            <div className="Person text-center">
+              <div className="imageIcon rounded-full overflow-hidden flex items-center justify-center bg-pink-300">
+                <CatComponent />
+              </div>
               <div className="mt-3 text-base font-semibold">Hien Hoang</div>
               <div className="text-sm text-gray-600">Front End + Back End</div>
             </div>
