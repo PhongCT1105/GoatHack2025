@@ -79,7 +79,7 @@ The project is ongoing, and future plans include:
 ---
 
 ## 🌐 **Try It Out**
-- **Website:** [Repo2Resume](https://repo2resume-git-main-phong-caos-projects.vercel.app)  
+- **Website:** [Repo2Resume](https://repo2resume.vercel.app/)  
 - **GitHub:** [Repo2Resume Repository](https://github.com/PhuongCT1105/Repo2Resume)  
 - **Docker Hub:** [Repo2Resume on Docker Hub](https://hub.docker.com)  
 
